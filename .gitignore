@@ -1,0 +1,10 @@
+/api/build/
+/sample/build/
+/.gradle/
+/transport-jvm/build/
+/.idea/
+/local.properties
+/bridge-api-models/build/
+/bridge-transport-jvm/build/
+/bridge-protocol/build/
+/bridge-api-core/build/
