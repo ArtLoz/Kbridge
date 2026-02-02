@@ -1,115 +1,82 @@
 package com.l2bot.bridge.models.entities
 
+import com.l2bot.bridge.models.interfaces.IL2Buff
+import com.l2bot.bridge.models.interfaces.IL2Item
+import com.l2bot.bridge.models.interfaces.IL2Live
 import com.l2bot.bridge.models.item.L2Item
 import com.l2bot.bridge.models.skill.L2Buff
+import com.l2bot.bridge.models.types.L2Class
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Полноценная модель живого существа
- * Full model of a live entity
+ * Data class for live entities.
+ * Data class для живых существ.
  */
 @Serializable
-open class L2Live : L2Spawn() {
-    /** Титул объекта | Object title */
-    var title: String = ""
+data class L2Live(
+    // IL2Object fields
+    override val name: String = "",
+    override val id: Int = 0,
+    override val oid: Int = 0,
+    override val valid: Boolean = false,
+    @SerialName("l2_class")
+    override val l2Class: L2Class = L2Class.UNKNOWN,
 
-    /** Уровень | Level */
-    var level: Int = 0
+    // IL2Spawn fields
+    override val x: Int = 0,
+    override val y: Int = 0,
+    override val z: Int = 0,
+    @SerialName("spawn_time")
+    override val spawnTime: Int = 0,
+    @SerialName("in_zone")
+    override val inZone: Boolean = false,
 
-    /** Текущее HP | Current HP */
+    // IL2Live fields
+    override val title: String = "",
+    override val level: Int = 0,
     @SerialName("hp")
-    var hpPercent: Long = 0
-
-
+    override val hpPercent: Long = 0,
     @SerialName("cur_hp")
-    var curHp: Long = 0
-
+    override val curHp: Long = 0,
     @SerialName("cur_mp")
-    var  curMp: Long = 0
-
-    /** Максимальное HP | Maximum HP */
+    override val curMp: Long = 0,
     @SerialName("max_hp")
-    var maxHp: Long = 0
-
-    /** Текущее MP | Current MP */
+    override val maxHp: Long = 0,
     @SerialName("mp")
-    var mpPercent: Long = 0
-
-    /** Максимальное MP | Maximum MP */
+    override val mpPercent: Long = 0,
     @SerialName("max_mp")
-    var maxMp: Long = 0
-
-    /** Опыт | Experience */
-    var exp: Long = 0
-
-    /** Очки умений | Skill points */
-    var sp: Long = 0
-
-    /** Карма | Karma */
-    var karma: Int = 0
-
-    /** Уровень заточки оружия | Weapon enchant level */
-    var enchant: Int = 0
-
-    /** Можно ли атаковать | Is attackable */
-    var attackable: Boolean = false
-
-    /** Можно ли использовать Sweep | Is sweepable */
-    var sweepable: Boolean = false
-
-    /** Является ли ПК | Is PK */
+    override val maxMp: Long = 0,
+    override val exp: Long = 0,
+    override val sp: Long = 0,
+    override val karma: Int = 0,
+    override val enchant: Int = 0,
+    override val attackable: Boolean = false,
+    override val sweepable: Boolean = false,
     @SerialName("is_pk")
-    var isPk: Boolean = false
-
-    /** Находится ли в PvP режиме | Is in PvP mode */
+    override val isPk: Boolean = false,
     @SerialName("is_pvp")
-    var isPvp: Boolean = false
-
-    /** Бежит ли | Is running */
+    override val isPvp: Boolean = false,
     @SerialName("is_running")
-    var isRunning: Boolean = false
-
-    /** Находится ли в бою | Is in combat */
+    override val isRunning: Boolean = false,
     @SerialName("in_combat")
-    var inCombat: Boolean = false
-
+    override val inCombat: Boolean = false,
     @SerialName("is_sitting")
-    var isSitting: Boolean = false
-
-    /** Мертв ли | Is dead */
+    override val isSitting: Boolean = false,
     @SerialName("is_dead")
-    var isDead: Boolean = false
-
-    /** Невидимый ли | Is invisible */
+    override val isDead: Boolean = false,
     @SerialName("is_invisible")
-    var isInvisible: Boolean = false
-
-    /** Координата X точки назначения | Movement target X */
+    override val isInvisible: Boolean = false,
     @SerialName("to_x")
-    var toX: Int = 0
-
-    /** Координата Y точки назначения | Movement target Y */
+    override val toX: Int = 0,
     @SerialName("to_y")
-    var toY: Int = 0
-
-    /** Координата Z точки назначения | Movement target Z */
+    override val toY: Int = 0,
     @SerialName("to_z")
-    var toZ: Int = 0
-
-    /** Текущая цель (рекурсивная модель, глубина ограничена на сервере) | Current target */
-    var target: L2Live? = null
-
-    /** Информация о текущем касте | Current cast info */
+    override val toZ: Int = 0,
+    override val target: L2Live? = null,
     @SerialName("cast_info")
-    var castInfo: L2Buff? = null
-
-    /** Список баффов | List of buffs */
-    var buffs: List<L2Buff> = emptyList()
-
-    /** Список особых состояний / дебаффов | List of abnormals / debuffs */
-    var abnormals: List<L2Buff> = emptyList()
-
-    /** Список экипировки | List of equipped items */
-    var equips: List<L2Item> = emptyList()
-}
+    override val castInfo: L2Buff? = null,
+    override val buffs: List<L2Buff> = emptyList(),
+    override val abnormals: List<L2Buff> = emptyList(),
+    override val equips: List<L2Item> = emptyList()
+) : IL2Live

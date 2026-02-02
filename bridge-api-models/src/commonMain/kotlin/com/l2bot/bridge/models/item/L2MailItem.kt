@@ -1,55 +1,43 @@
 package com.l2bot.bridge.models.item
 
-import com.l2bot.bridge.models.L2Object
+import com.l2bot.bridge.models.interfaces.IL2MailItem
+import com.l2bot.bridge.models.types.L2Class
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
 /**
- * Интерфейс почтового отправления | Mail item interface
+ * Data class for mail items.
+ * Data class для почтовых отправлений.
  */
 @Serializable
 data class L2MailItem(
-    /** Отправлено ли письмо нами | Whether the mail was sent by us */
+    // IL2Object fields
+    override val name: String = "",
+    override val id: Int = 0,
+    override val oid: Int = 0,
+    override val valid: Boolean = false,
+    @SerialName("l2_class")
+    override val l2Class: L2Class = L2Class.UNKNOWN,
+
+    // IL2MailItem fields
     @SerialName("is_sent")
-    val isSent: Boolean,
-
-    /** Тип письма | Mail type */
+    override val isSent: Boolean = false,
     @SerialName("mail_type")
-    val mailType: Int,
-
-    /** Заголовок письма | Mail title */
-    val title: String,
-
-    /** Имя отправителя | Sender name */
-    val sender: String,
-
-    /** Заблокировано ли письмо (требует оплаты за получение) | Whether the mail is locked (payment required) */
+    override val mailType: Int = 0,
+    override val title: String = "",
+    override val sender: String = "",
     @SerialName("is_locked")
-    val isLocked: Boolean,
-
-    /** Время истечения срока хранения | Expiration timestamp */
+    override val isLocked: Boolean = false,
     @SerialName("expiration_time")
-    val expirationTime: Long,
-
-    /** Является ли письмо непрочитанным | Whether the mail is unread */
+    override val expirationTime: Long = 0,
     @SerialName("is_unread")
-    val isUnread: Boolean,
-
-    /** Содержит ли письмо прикрепленные предметы | Whether the mail has attached items */
+    override val isUnread: Boolean = false,
     @SerialName("with_items")
-    val withItems: Boolean,
-
-    /** Есть ли не полученные предметы в письме | Presence of unreceived items */
+    override val withItems: Boolean = false,
     @SerialName("no_recv_items")
-    val noRecvItems: Boolean,
-
-    /** Является ли письмо системной новостью | Whether the mail is news */
+    override val noRecvItems: Boolean = false,
     @SerialName("is_news")
-    val isNews: Boolean,
-
-    /** Актуальное время (время получения/отправки) | Actual mail timestamp */
+    override val isNews: Boolean = false,
     @SerialName("actual_time")
-    val actualTime: Long,
-) : L2Object() {
-
-}
+    override val actualTime: Long = 0
+) : IL2MailItem

@@ -1,31 +1,37 @@
 package com.l2bot.bridge.models.skill
 
-import com.l2bot.bridge.models.L2Object
+import com.l2bot.bridge.models.interfaces.IL2Buff
+import com.l2bot.bridge.models.types.L2Class
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
 /**
- * Класс, описывающий бафф или дебафф
- * Class describing a buff or debuff
+ * Data class describing a buff or debuff.
+ * Data class для баффа или дебаффа.
  */
 @Serializable
-open class L2Buff : L2Object() {
-    /** Уровень баффа/дебаффа | Skill/Buff level */
-    var level: Int = 0
+data class L2Buff(
+    // IL2Object fields
+    override val name: String = "",
+    override val id: Int = 0,
+    override val oid: Int = 0,
+    override val valid: Boolean = false,
+    @SerialName("l2_class")
+    override val l2Class: L2Class = L2Class.UNKNOWN,
 
-    /** Подуровень баффа/дебаффа (заточка) | Skill/Buff sub-level (enchant) */
+    // IL2Buff fields
+    /** Buff level | Уровень баффа */
+    override val level: Int = 0,
+    /** Buff sub-level (enchant) | Подуровень (заточка) */
     @SerialName("level2")
-    var level2: Int = 0
-
-    /** Момент времени (GetTickCount), когда бафф/дебафф был наложен | Start time (GetTickCount) when buff was applied */
+    override val level2: Int = 0,
+    /** Start time (GetTickCount) | Время начала */
     @SerialName("start_time")
-    var startTime: Long = 0
-
-    /** Момент времени (GetTickCount), когда бафф/дебафф закончится | End time (GetTickCount) when buff will expire */
+    override val startTime: Long = 0,
+    /** End time (GetTickCount) | Время окончания */
     @SerialName("end_time")
-    var endTime: Long = 0
-
-    /** Общее время отката баффа/дебаффа | Total reuse time of buff/debuff */
+    override val endTime: Long = 0,
+    /** Total reuse time | Время отката */
     @SerialName("reuse_time")
-    var reuseTime: Int = 0
-}
+    override val reuseTime: Int = 0
+) : IL2Buff

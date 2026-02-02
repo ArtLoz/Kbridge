@@ -1,79 +1,116 @@
 package com.l2bot.bridge.models.entities
 
+import com.l2bot.bridge.models.interfaces.IL2Char
+import com.l2bot.bridge.models.item.L2Item
+import com.l2bot.bridge.models.skill.L2Buff
+import com.l2bot.bridge.models.types.L2Class
 import com.l2bot.bridge.models.types.L2Race
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * Data class for player characters.
+ * Data class для игровых персонажей.
+ */
 @Serializable
-open class L2Char : L2Live() {
-    /** Текущее значение CP | Current CP value */
-    var cp: Long = 0
+data class L2Char(
+    // IL2Object fields
+    override val name: String = "",
+    override val id: Int = 0,
+    override val oid: Int = 0,
+    override val valid: Boolean = false,
+    @SerialName("l2_class")
+    override val l2Class: L2Class = L2Class.UNKNOWN,
 
-    /** Текущее значение CP (дубликат для совместимости) | Current CP value */
+    // IL2Spawn fields
+    override val x: Int = 0,
+    override val y: Int = 0,
+    override val z: Int = 0,
+    @SerialName("spawn_time")
+    override val spawnTime: Int = 0,
+    @SerialName("in_zone")
+    override val inZone: Boolean = false,
+
+    // IL2Live fields
+    override val title: String = "",
+    override val level: Int = 0,
+    @SerialName("hp")
+    override val hpPercent: Long = 0,
+    @SerialName("cur_hp")
+    override val curHp: Long = 0,
+    @SerialName("cur_mp")
+    override val curMp: Long = 0,
+    @SerialName("max_hp")
+    override val maxHp: Long = 0,
+    @SerialName("mp")
+    override val mpPercent: Long = 0,
+    @SerialName("max_mp")
+    override val maxMp: Long = 0,
+    override val exp: Long = 0,
+    override val sp: Long = 0,
+    override val karma: Int = 0,
+    override val enchant: Int = 0,
+    override val attackable: Boolean = false,
+    override val sweepable: Boolean = false,
+    @SerialName("is_pk")
+    override val isPk: Boolean = false,
+    @SerialName("is_pvp")
+    override val isPvp: Boolean = false,
+    @SerialName("is_running")
+    override val isRunning: Boolean = false,
+    @SerialName("in_combat")
+    override val inCombat: Boolean = false,
+    @SerialName("is_sitting")
+    override val isSitting: Boolean = false,
+    @SerialName("is_dead")
+    override val isDead: Boolean = false,
+    @SerialName("is_invisible")
+    override val isInvisible: Boolean = false,
+    @SerialName("to_x")
+    override val toX: Int = 0,
+    @SerialName("to_y")
+    override val toY: Int = 0,
+    @SerialName("to_z")
+    override val toZ: Int = 0,
+    override val target: L2Live? = null,
+    @SerialName("cast_info")
+    override val castInfo: L2Buff? = null,
+    override val buffs: List<L2Buff> = emptyList(),
+    override val abnormals: List<L2Buff> = emptyList(),
+    override val equips: List<L2Item> = emptyList(),
+
+    // IL2Char fields
+    override val cp: Long = 0,
     @SerialName("cur_cp")
-    var curCp: Long = 0
-
-    /** Максимальное значение CP | Maximum CP value */
+    override val curCp: Long = 0,
     @SerialName("max_cp")
-    var maxCp: Long = 0
-
-    /** Пол персонажа (0 - муж, 1 - жен) | Character sex (0 - male, 1 - female) */
-    var sex: Int = 0
-
-    /** Раса персонажа | Character race */
-    var race: L2Race = L2Race.UNKNOWN
-
-    /** Является ли персонаж Героем | Whether the character is a Hero */
+    override val maxCp: Long = 0,
+    override val sex: Int = 0,
+    override val race: L2Race = L2Race.UNKNOWN,
     @SerialName("is_hero")
-    var isHero: Boolean = false
-
-    /** Является ли персонаж Дворянином (Noobless) | Whether the character is a Noble */
+    override val isHero: Boolean = false,
     @SerialName("is_noble")
-    var isNoble: Boolean = false
-
-    /** Наличие премиум аккаунта | Premium account status */
-    var premium: Boolean = false
-
-    /** Идентификатор текущего класса | Current class ID */
+    override val isNoble: Boolean = false,
+    override val premium: Boolean = false,
     @SerialName("class_id")
-    var classId: Int = 0
-
-    /** Идентификатор основного класса (мейна) | Main class ID */
+    override val classId: Int = 0,
     @SerialName("main_class_id")
-    var mainClassId: Int = 0
-
-    /** Название текущего класса | Current class name */
+    override val mainClassId: Int = 0,
     @SerialName("class_name")
-    var className: String = ""
-
-    /** Альтернативное название класса | Alternative class name */
+    override val className: String = "",
     @SerialName("class_name_alt")
-    var classNameAlt: String = ""
-
-    /** Приоритет класса | Class priority */
+    override val classNameAlt: String = "",
     @SerialName("class_priority")
-    var classPriority: Int = 0
-
-    /** Тип ездового животного | Mount type */
+    override val classPriority: Int = 0,
     @SerialName("mount_type")
-    var mountType: Int = 0
-
-    /** Тип торговой лавки (0-None, 1-Sell, 2-Buy, и т.д.) | Store type */
+    override val mountType: Int = 0,
     @SerialName("store_type")
-    var storeType: Int = 0
-
-    /** Количество активных кубиков | Number of active cubics */
+    override val storeType: Int = 0,
     @SerialName("cubic_count")
-    var cubicCount: Int = 0
-
-    /** Количество рекомендаций | Number of recommendations */
-    var recom: Int = 0
-
-    /** Название клана | Clan name */
+    override val cubicCount: Int = 0,
+    override val recom: Int = 0,
     @SerialName("clan_name")
-    var clanName: String = ""
-
-    /** Название альянса | Ally name */
+    override val clanName: String = "",
     @SerialName("ally_name")
-    var allyName: String = ""
-}
+    override val allyName: String = ""
+) : IL2Char

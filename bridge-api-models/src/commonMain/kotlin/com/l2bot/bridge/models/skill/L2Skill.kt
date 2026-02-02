@@ -1,29 +1,43 @@
 package com.l2bot.bridge.models.skill
 
+import com.l2bot.bridge.models.interfaces.IL2Skill
+import com.l2bot.bridge.models.types.L2Class
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
 /**
- * Интерфейс умений персонажа | Character skills interface
+ * Data class for character skills.
+ * Data class для умений персонажа.
  */
 @Serializable
-open class L2Skill : L2Buff() {
-    /** Является ли умение пассивным | Whether the skill is passive */
+data class L2Skill(
+    // IL2Object fields
+    override val name: String = "",
+    override val id: Int = 0,
+    override val oid: Int = 0,
+    override val valid: Boolean = false,
+    @SerialName("l2_class")
+    override val l2Class: L2Class = L2Class.UNKNOWN,
+
+    // IL2Buff fields
+    override val level: Int = 0,
+    @SerialName("level2")
+    override val level2: Int = 0,
+    @SerialName("start_time")
+    override val startTime: Long = 0,
+    @SerialName("end_time")
+    override val endTime: Long = 0,
+    @SerialName("reuse_time")
+    override val reuseTime: Int = 0,
+
+    // IL2Skill fields
     @SerialName("is_passive")
-    var isPassive: Boolean = false
-
-    /** Заблокировано ли умение (например, из-за нехватки ресурсов или условий) | Whether the skill is disabled */
+    override val isPassive: Boolean = false,
     @SerialName("is_disabled")
-    var isDisabled: Boolean = false
-
-    /** Является ли умение заточенным | Whether the skill is enchanted */
+    override val isDisabled: Boolean = false,
     @SerialName("is_enchanted")
-    var isEnchanted: Boolean = false
-
-    /** Дистанция применения умения | Skill cast range */
-    var range: Int = 0
-
-    /** Является ли умение аурой (переключаемым) | Whether the skill is an aura (toggle) */
+    override val isEnchanted: Boolean = false,
+    override val range: Int = 0,
     @SerialName("is_aura")
-    var isAura: Boolean = false
-}
+    override val isAura: Boolean = false
+) : IL2Skill

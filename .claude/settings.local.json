@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:adrenalinebot.com)",
+      "Bash(./gradlew.bat :bridge-api-models:compileKotlinJvm:*)",
+      "Bash(./gradlew.bat build:*)"
+    ]
+  }
+}

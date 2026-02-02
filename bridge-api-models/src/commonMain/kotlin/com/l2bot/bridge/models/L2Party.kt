@@ -9,35 +9,35 @@ import kotlinx.serialization.Serializable
  * Интерфейс группы (Party) | Party interface
  */
 @Serializable
-class L2Party {
+data class L2Party(
     /** OID лидера группы | Party leader's OID */
     @SerialName("leader_oid")
-    var leaderOid: Int = 0
+    val leaderOid: Int = 0,
 
-    /** * Тип распределения трофеев | Loot distribution type
+    /** Тип распределения трофеев | Loot distribution type
      * (0-Finders, 1-Random, 2-Random+IncludeSpcl, 3-ByTurn, 4-ByTurn+IncludeSpcl)
      */
     @SerialName("loot_type")
-    var lootType: Int = 0
+    val lootType: Int = 0,
 
     /** Наличие активного приглашения в группу | Presence of an active party invite */
     @SerialName("is_ask_join")
-    var isAskJoin: Boolean = false
+    val isAskJoin: Boolean = false,
 
     /** Имя приглашающего в группу | Name of the person inviting to party */
     @SerialName("ask_join_name")
-    var askJoinName: String = ""
+    val askJoinName: String = "",
 
     /** Время ожидания ответа на приглашение | Party invite wait time */
     @SerialName("ask_join_time")
-    var askJoinTime: Long = 0
+    val askJoinTime: Long = 0,
 
     /** Объект лидера группы | Party leader object */
-    var leader: L2Char? = null
+    val leader: L2Char? = null,
 
     /** Список членов группы | List of party members */
-    var members: List<L2Char> = emptyList()
+    val members: List<L2Char> = emptyList(),
 
     /** Список питомцев группы | List of party pets */
-    var pets: List<L2Npc> = emptyList()
-}
+    val pets: List<L2Npc> = emptyList()
+)

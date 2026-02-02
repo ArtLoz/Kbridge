@@ -1,26 +1,19 @@
 plugins {
-    kotlin("jvm")
-    // Удаляем или комментируем строку application, чтобы не было конфликта задач 'run'
-    // application
-    id("org.jetbrains.compose")
-    id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.compose)
+    alias(libs.plugins.compose.compiler)
 }
 
 dependencies {
     implementation(project(":bridge-api-core"))
     implementation(project(":bridge-transport-jvm"))
 
-    // Зависимости Compose
     implementation(compose.desktop.currentOs)
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:1.9.0")
+    implementation(libs.kotlinx.coroutines.swing)
 }
-
-// Удаляем старый блок application { ... }
-// Вместо него используем блок compose.desktop
 
 compose.desktop {
     application {
-        // Указываем главный класс здесь
         mainClass = "MainKt"
 
         nativeDistributions {
@@ -32,5 +25,5 @@ compose.desktop {
 }
 
 kotlin {
-    jvmToolchain(11)
+    jvmToolchain(17)
 }

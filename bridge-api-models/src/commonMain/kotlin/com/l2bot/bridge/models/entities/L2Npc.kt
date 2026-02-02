@@ -1,32 +1,92 @@
 package com.l2bot.bridge.models.entities
 
+import com.l2bot.bridge.models.interfaces.IL2Live
+import com.l2bot.bridge.models.interfaces.IL2Npc
+import com.l2bot.bridge.models.item.L2Item
+import com.l2bot.bridge.models.skill.L2Buff
+import com.l2bot.bridge.models.types.L2Class
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
 /**
- * Интерфейс NPC и питомцев | NPC and Pet interface
+ * Data class for NPCs.
+ * Data class для НПЦ.
  */
 @Serializable
-open class L2Npc : L2Live() {
-    /** Является ли NPC питомцем или суммоном | Whether the NPC is a pet or a summon */
+data class L2Npc(
+    // IL2Object fields
+    override val name: String = "",
+    override val id: Int = 0,
+    override val oid: Int = 0,
+    override val valid: Boolean = false,
+    @SerialName("l2_class")
+    override val l2Class: L2Class = L2Class.UNKNOWN,
+
+    // IL2Spawn fields
+    override val x: Int = 0,
+    override val y: Int = 0,
+    override val z: Int = 0,
+    @SerialName("spawn_time")
+    override val spawnTime: Int = 0,
+    @SerialName("in_zone")
+    override val inZone: Boolean = false,
+
+    // IL2Live fields
+    override val title: String = "",
+    override val level: Int = 0,
+    @SerialName("hp")
+    override val hpPercent: Long = 0,
+    @SerialName("cur_hp")
+    override val curHp: Long = 0,
+    @SerialName("cur_mp")
+    override val curMp: Long = 0,
+    @SerialName("max_hp")
+    override val maxHp: Long = 0,
+    @SerialName("mp")
+    override val mpPercent: Long = 0,
+    @SerialName("max_mp")
+    override val maxMp: Long = 0,
+    override val exp: Long = 0,
+    override val sp: Long = 0,
+    override val karma: Int = 0,
+    override val enchant: Int = 0,
+    override val attackable: Boolean = false,
+    override val sweepable: Boolean = false,
+    @SerialName("is_pk")
+    override val isPk: Boolean = false,
+    @SerialName("is_pvp")
+    override val isPvp: Boolean = false,
+    @SerialName("is_running")
+    override val isRunning: Boolean = false,
+    @SerialName("in_combat")
+    override val inCombat: Boolean = false,
+    @SerialName("is_sitting")
+    override val isSitting: Boolean = false,
+    @SerialName("is_dead")
+    override val isDead: Boolean = false,
+    @SerialName("is_invisible")
+    override val isInvisible: Boolean = false,
+    @SerialName("to_x")
+    override val toX: Int = 0,
+    @SerialName("to_y")
+    override val toY: Int = 0,
+    @SerialName("to_z")
+    override val toZ: Int = 0,
+    override val target: L2Live? = null,
+    @SerialName("cast_info")
+    override val castInfo: L2Buff? = null,
+    override val buffs: List<L2Buff> = emptyList(),
+    override val abnormals: List<L2Buff> = emptyList(),
+    override val equips: List<L2Item> = emptyList(),
+
+    // IL2Npc fields
     @SerialName("is_pet")
-    var isPet: Boolean = false
-
-    /** Тип питомца | Pet type */
+    override val isPet: Boolean = false,
     @SerialName("pet_type")
-    var petType: Int = 0
-
-    /** * Объект владельца (для питомцев и суммонов) | Owner object (for pets and summons)
-     * Может быть null, если владельца нет или он вне зоны видимости
-     */
-    var owner: L2Live? = null
-
-    /** * Тип NPC (0-Monster, 1-Guard, 2-Merchant, и т.д.) | NPC type
-     */
+    override val petType: Int = 0,
+    override val owner: L2Live? = null,
     @SerialName("npc_type")
-    var npcType: Int = 0
-
-    /** Количество NPC в группе | NPC count in a group */
+    override val npcType: Int = 0,
     @SerialName("npc_count")
-    var npcCount: Int = 0
-}
+    override val npcCount: Int = 0
+) : IL2Npc

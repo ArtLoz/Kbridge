@@ -1,83 +1,78 @@
 package com.l2bot.bridge.models.item
 
-import com.l2bot.bridge.models.L2Object
+import com.l2bot.bridge.models.interfaces.IL2Item
+import com.l2bot.bridge.models.types.L2Class
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
+/**
+ * Data class for inventory items.
+ * Data class для предметов инвентаря.
+ */
 @Serializable
-open class L2Item : L2Object() {
-    /** Слот предмета в инвентаре | Item slot in inventory */
-    var slot: Int = 0
+data class L2Item(
+    // IL2Object fields
+    override val name: String = "",
+    override val id: Int = 0,
+    override val oid: Int = 0,
+    override val valid: Boolean = false,
+    @SerialName("l2_class")
+    override val l2Class: L2Class = L2Class.UNKNOWN,
 
-    /** Количество предметов в стопке | Item count in stack */
-    var count: Long = 0
-
-    /** Надет ли предмет | Is item equipped */
-    var equipped: Boolean = false
-
-    /** Тип предмета | Item type (e.g. Armor, Weapon, etc.) */
+    // IL2Item fields
+    /** Item slot in inventory | Слот в инвентаре */
+    override val slot: Int = 0,
+    /** Item count | Количество */
+    override val count: Long = 0,
+    /** Is equipped | Надет ли */
+    override val equipped: Boolean = false,
+    /** Item type | Тип предмета */
     @SerialName("item_type")
-    var itemType: Int = 0
-
-    /** Грейд предмета (цифровое значение) | Item grade (numeric) */
-    var grade: Int = 0
-
-    /** Название грейда (None, D, C, B, A, S, R...) | Grade name */
+    override val itemType: Int = 0,
+    /** Grade (numeric) | Грейд */
+    override val grade: Int = 0,
+    /** Grade name | Название грейда */
     @SerialName("grade_name")
-    var gradeName: String = ""
-
-    /** Является ли предмет именным | Is item named */
+    override val gradeName: String = "",
+    /** Is named item | Именной предмет */
     @SerialName("is_named")
-    var isNamed: Boolean = false
-
-    /** Слот экипировки (часть тела) | Equipment slot (body part) */
+    override val isNamed: Boolean = false,
+    /** Body part slot | Слот экипировки */
     @SerialName("body_part")
-    var bodyPart: Int = 0
-
-    /** Уровень заточки | Enchant level */
-    var enchant: Int = 0
-
-    /** ID первого аугмента (ЛС) | First augmentation ID */
+    override val bodyPart: Int = 0,
+    /** Enchant level | Уровень заточки */
+    override val enchant: Int = 0,
+    /** First augment ID | ID первого аугмента */
     @SerialName("augment_id")
-    var augmentId: Int = 0
-
-    /** ID второго аугмента (ЛС) | Second augmentation ID */
+    override val augmentId: Int = 0,
+    /** Second augment ID | ID второго аугмента */
     @SerialName("augment_id2")
-    var augmentId2: Int = 0
-
-    /** Оставшееся время (для временных предметов) в мс | Remaining time for shadow/temporary items */
+    override val augmentId2: Int = 0,
+    /** Remaining time | Оставшееся время */
     @SerialName("remain_time")
-    var remainTime: Int = 0
-
-    /** Элемент атаки | Attack element type */
+    override val remainTime: Int = 0,
+    /** Attack element type | Элемент атаки */
     @SerialName("atk_elem")
-    var atkElem: Int = 0
-
-    /** Мощность атаки элементом | Attack element power */
+    override val atkElem: Int = 0,
+    /** Attack element power | Сила элемента */
     @SerialName("elem_power")
-    var elemPower: Int = 0
-
-    /** Защита от воды | Water resistance power */
+    override val elemPower: Int = 0,
+    /** Water resistance | Защита от воды */
     @SerialName("p_water")
-    var waterPower: Int = 0
-
-    /** Защита от огня | Fire resistance power */
+    override val waterPower: Int = 0,
+    /** Fire resistance | Защита от огня */
     @SerialName("p_fire")
-    var firePower: Int = 0
-
-    /** Защита от земли | Earth resistance power */
+    override val firePower: Int = 0,
+    /** Earth resistance | Защита от земли */
     @SerialName("p_earth")
-    var earthPower: Int = 0
-
-    /** Защита от ветра | Wind resistance power */
+    override val earthPower: Int = 0,
+    /** Wind resistance | Защита от ветра */
     @SerialName("p_wind")
-    var windPower: Int = 0
-
-    /** Защита от тьмы | Unholy resistance power */
+    override val windPower: Int = 0,
+    /** Unholy resistance | Защита от тьмы */
     @SerialName("p_unholy")
-    var unholyPower: Int = 0
-
-    /** Защита от святости | Holy resistance power */
+    override val unholyPower: Int = 0,
+    /** Holy resistance | Защита от святости */
     @SerialName("p_holy")
-    var holyPower: Int = 0
-}
+    override val holyPower: Int = 0
+) : IL2Item
