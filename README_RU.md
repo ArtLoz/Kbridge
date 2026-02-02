@@ -28,9 +28,11 @@ bot.actionEvents.collect { println("Action: ${it.actionId}") }
 ## Установка
 
 ```kotlin
+maven { url = uri("https://jitpack.io") }
+
 dependencies {
-    implementation("com.github.artloz:bridge-api-core:1.0.0")
-    implementation("com.github.artloz:bridge-transport-jvm:1.0.0")
+    implementation("com.github.ArtLoz.Kbridge:bridge-api-core:1.0.0")
+    implementation("com.github.ArtLoz.Kbridge:bridge-transport-jvm:1.0.0")
 }
 ```
 
