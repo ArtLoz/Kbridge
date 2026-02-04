@@ -31,8 +31,8 @@ bot.actionEvents.collect { println("Action: ${it.actionId}") }
 maven { url = uri("https://jitpack.io") }
 
 dependencies {
-    implementation("com.github.ArtLoz.Kbridge:bridge-api-core:1.0.0")
-    implementation("com.github.ArtLoz.Kbridge:bridge-transport-jvm:1.0.0")
+    implementation("com.github.ArtLoz.Kbridge:bridge-api-core:1.0.1")
+    implementation("com.github.ArtLoz.Kbridge:bridge-transport-jvm:1.0.1")
 }
 ```
 
