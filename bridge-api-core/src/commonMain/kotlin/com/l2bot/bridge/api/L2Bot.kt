@@ -1199,13 +1199,12 @@ class L2Bot internal constructor(
         )
     }
 
-    override suspend fun moveGpsPoint(gpsPointName: String, timeoutMs: Long): Boolean {
+    override suspend fun moveGpsPoint(gpsPointName: String): Boolean {
         return rpcClient.call(
             method = "Engine.GPSMove",
             params = buildJsonObject {
                 put("gps_name", gpsPointName)
-            },
-            timeoutMs = timeoutMs
+            }
         )
     }
 
@@ -1218,14 +1217,13 @@ class L2Bot internal constructor(
        )
     }
 
-    override suspend fun moveGpsPointRandom(gpsPointName: String, range: Int, timeoutMs: Long): Boolean {
+    override suspend fun moveGpsPointRandom(gpsPointName: String, range: Int): Boolean {
         return rpcClient.call(
             method = "Engine.GPSMove",
             params = buildJsonObject {
                 put("gps_name", gpsPointName)
                 put("gps_range", range)
-            },
-            timeoutMs = timeoutMs
+            }
         )
     }
 

@@ -1192,7 +1192,7 @@ abstract class L2Control {
      *
      * @param gpsPointName GPS point name / Имя GPS точки
      */
-    abstract suspend fun moveGpsPoint(gpsPointName: String, timeoutMs: Long = 60000): Boolean
+    abstract suspend fun moveGpsPoint(gpsPointName: String): Boolean
 
     /**
      * Get GPS point by name.
@@ -1209,7 +1209,7 @@ abstract class L2Control {
      * @param gpsPointName GPS point name / Имя GPS точки
      * @param range Random offset range / Диапазон случайного смещения
      */
-    abstract suspend fun moveGpsPointRandom(gpsPointName: String, range: Int = 100, timeoutMs: Long = 60000): Boolean
+    abstract suspend fun moveGpsPointRandom(gpsPointName: String, range: Int = 100): Boolean
 
     // ==================== Events / События ====================
 
