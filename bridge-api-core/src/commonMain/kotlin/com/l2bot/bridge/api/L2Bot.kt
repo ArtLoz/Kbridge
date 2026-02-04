@@ -1204,7 +1204,8 @@ class L2Bot internal constructor(
             method = "Engine.GPSMove",
             params = buildJsonObject {
                 put("gps_name", gpsPointName)
-            }
+            },
+            timeoutMs = 60_000 *10
         )
     }
 
@@ -1223,7 +1224,8 @@ class L2Bot internal constructor(
             params = buildJsonObject {
                 put("gps_name", gpsPointName)
                 put("gps_range", range)
-            }
+            },
+            timeoutMs = 60_000 *10
         )
     }
 

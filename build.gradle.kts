@@ -6,5 +6,5 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
 }
 
-group = "com.l2bot.bridge"
-version = "1.0.0"
+group = libs.versions.sdkGroup.get()
+version = libs.versions.sdkVersion.get()
