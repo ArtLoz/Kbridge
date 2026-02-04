@@ -20,7 +20,7 @@ class JvmPipeTransport : Transport {
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     
     private val _isConnected = MutableStateFlow(false)
-    override val isConnected: Flow<Boolean> = _isConnected.asStateFlow()
+    override val isConnected: StateFlow<Boolean> = _isConnected.asStateFlow()
     
     override suspend fun connect(target: String) = withContext(Dispatchers.IO) {
         responseBuffer.clear()

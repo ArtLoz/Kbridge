@@ -23,6 +23,7 @@ import com.l2bot.bridge.models.types.RestartType
 import com.l2bot.bridge.models.types.WaitResult
 import com.l2bot.bridge.models.types.ZoneType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 /**
  * Base controller class for L2 bot operations.
@@ -1235,5 +1236,5 @@ abstract class L2Control {
      * Flow of connection status changes.
      * Поток изменений статуса подключения.
      */
-    abstract val connectionStatus: Flow<ConnectionStatus>
+    abstract val connectionStatus: StateFlow<ConnectionStatus>
 }

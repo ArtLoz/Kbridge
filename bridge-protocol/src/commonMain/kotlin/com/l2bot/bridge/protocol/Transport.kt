@@ -1,6 +1,7 @@
 package com.l2bot.bridge.protocol
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 interface Transport {
     suspend fun send(data: String)
@@ -13,5 +14,5 @@ interface Transport {
     suspend fun connect(target: String)
     suspend fun disconnect()
     
-    val isConnected: Flow<Boolean>
+    val isConnected: StateFlow<Boolean>
 }

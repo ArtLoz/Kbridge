@@ -1,7 +1,6 @@
 package com.l2bot.bridge.api
 
 import com.l2bot.bridge.models.L2GPSPoint
-import com.l2bot.bridge.models.L2Object
 import com.l2bot.bridge.models.dialogs.L2ConfirmDlg
 import com.l2bot.bridge.models.entities.L2Char
 import com.l2bot.bridge.models.entities.L2Live
@@ -25,8 +24,11 @@ import com.l2bot.bridge.models.types.LootType
 import com.l2bot.bridge.models.types.RestartType
 import com.l2bot.bridge.models.types.WaitResult
 import com.l2bot.bridge.models.types.ZoneType
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.*
 
 class L2Bot internal constructor(
@@ -34,9 +36,13 @@ class L2Bot internal constructor(
     val charName: String
 ) : L2Control() {
 
+    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
     private val rpcClient = RpcClient(transport).apply {
         onGlobalError = { ex ->
-            println("LOG [${charName}]: Критическая ошибка RPC -> ${ex.message}")
+            scope.launch {
+                _errors.emit(ex)
+            }
         }
     }
     private val _errors = MutableSharedFlow<L2RpcException>()
@@ -91,11 +97,11 @@ class L2Bot internal constructor(
                 }
             }
 
-    override val connectionStatus: Flow<ConnectionStatus> =
+    override val connectionStatus: StateFlow<ConnectionStatus> =
         transport.isConnected.map { connected ->
             if (connected) ConnectionStatus.CONNECTED
             else ConnectionStatus.DISCONNECTED
-        }
+        }.stateIn(scope, SharingStarted.Eagerly, ConnectionStatus.DISCONNECTED)
 
     suspend fun connect() {
         transport.connect(charName)
