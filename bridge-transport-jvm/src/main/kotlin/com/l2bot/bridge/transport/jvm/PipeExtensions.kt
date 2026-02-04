@@ -47,31 +47,32 @@ fun WinNT.HANDLE.readLine(): String? {
     return buffer.toString()
 }
 
-suspend fun WinNT.HANDLE.readLineWithTimeout(timeoutMs: Long = 1000): String? {
+suspend fun WinNT.HANDLE.readLineWithTimeout(timeoutMs: Long, buffer: StringBuilder): String? {
     val startTime = System.currentTimeMillis()
-    val buffer = StringBuilder()
     val readBuffer = ByteArray(4096)
     val bytesRead = IntByReference()
     val available = IntByReference()
-    
-    while (System.currentTimeMillis() - startTime < timeoutMs) {
+
+    while (true) {
+        val newlineIdx = buffer.indexOf('\n')
+        if (newlineIdx >= 0) {
+            val line = buffer.substring(0, newlineIdx).trimEnd('\r')
+            buffer.delete(0, newlineIdx + 1)
+            return line
+        }
+
+        if (System.currentTimeMillis() - startTime >= timeoutMs) {
+            return null
+        }
+
         val peekResult = Kernel32.INSTANCE.PeekNamedPipe(this, null, 0, null, available, null)
-        
         if (peekResult && available.value > 0) {
             val readResult = Kernel32.INSTANCE.ReadFile(this, readBuffer, 4096, bytesRead, null)
-            
             if (readResult && bytesRead.value > 0) {
-                val text = String(readBuffer, 0, bytesRead.value, Charsets.UTF_8)
-                buffer.append(text)
-                
-                if (buffer.contains("\r\n") || buffer.contains("\n")) {
-                    return buffer.toString().trim()
-                }
+                buffer.append(String(readBuffer, 0, bytesRead.value, Charsets.UTF_8))
             }
         }
-        
+
         delay(10)
     }
-    
-    return null
 }

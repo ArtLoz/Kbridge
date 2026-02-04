@@ -52,35 +52,56 @@ class RpcClient(
             val request = RpcRequest(id, method, params)
             val requestJson = json.encodeToString(request)
 
-            val responseLine = try {
-                transport.sendAndReceive(requestJson, timeoutMs)
+            try {
+                transport.send(requestJson)
             } catch (e: Exception) {
                 handleError(L2RpcException.Transport("Transport error in method $method", e))
             }
 
-            processResponse(responseLine, id, currentSerializer)
+            val response = readMatchingResponse(id, timeoutMs, method)
+            processResponse(response, currentSerializer)
         }
     }
 
     /**
-     * Validates the raw response and maps it to the target data model.
+     * Reads responses from transport in a loop until one with the expected ID arrives.
+     * Stale responses from previously timed-out requests are silently discarded.
+     */
+    @PublishedApi
+    internal suspend fun readMatchingResponse(id: Long, timeoutMs: Long, method: String): RpcResponse {
+        val deadline = System.currentTimeMillis() + timeoutMs
+        while (true) {
+            val remaining = deadline - System.currentTimeMillis()
+            if (remaining <= 0) {
+                handleError(L2RpcException.Transport("Response timeout (${timeoutMs}ms) in method $method"))
+            }
+            val line = try {
+                transport.receive(remaining)
+            } catch (e: Exception) {
+                handleError(L2RpcException.Transport("Transport error in method $method", e))
+            } ?: handleError(L2RpcException.Transport("Response timeout (${timeoutMs}ms) in method $method"))
+
+            val candidate = try {
+                json.decodeFromString<RpcResponse>(line)
+            } catch (e: Exception) {
+                handleError(L2RpcException.Serialization("Malformed JSON from Delphi: $line", e))
+            }
+
+            if (candidate.id == id) {
+                return candidate
+            }
+            // stale response from a previously timed-out request — discard, loop
+        }
+    }
+
+    /**
+     * Validates the response and maps it to the target data model.
      */
     @PublishedApi
     internal fun <T> processResponse(
-        responseLine: String,
-        expectedId: Long,
+        response: RpcResponse,
         serializer: KSerializer<T>
     ): T {
-        val response = try {
-            json.decodeFromString<RpcResponse>(responseLine)
-        } catch (e: Exception) {
-            handleError(L2RpcException.Serialization("Malformed JSON from Delphi: $responseLine", e))
-        }
-
-        if (response.id != expectedId) {
-            handleError(L2RpcException.Protocol("ID mismatch! Expected $expectedId, received ${response.id}"))
-        }
-
         if (response.status == "error") {
             val err = response.error
             handleError(L2RpcException.RemoteError(err?.code ?: -1, err?.message ?: "Unknown"))

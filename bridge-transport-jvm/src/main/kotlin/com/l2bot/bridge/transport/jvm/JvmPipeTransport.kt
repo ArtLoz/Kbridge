@@ -14,13 +14,16 @@ class JvmPipeTransport : Transport {
     private var actionPipe: WinNT.HANDLE? = null
     private var packetPipe: WinNT.HANDLE? = null
     private var cliPacketPipe: WinNT.HANDLE? = null
-    
+
+    private val responseBuffer = StringBuilder()
+
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     
     private val _isConnected = MutableStateFlow(false)
     override val isConnected: Flow<Boolean> = _isConnected.asStateFlow()
     
     override suspend fun connect(target: String) = withContext(Dispatchers.IO) {
+        responseBuffer.clear()
         try {
             commandPipe = connectToPipe(
                 "\\\\.\\pipe\\l2bot_commands_$target",
@@ -55,6 +58,7 @@ class JvmPipeTransport : Transport {
     }
     
     override suspend fun disconnect() = withContext(Dispatchers.IO) {
+        responseBuffer.clear()
         scope.cancel()
         commandPipe?.let { Kernel32.INSTANCE.CloseHandle(it) }
         responsePipe?.let { Kernel32.INSTANCE.CloseHandle(it) }
@@ -69,28 +73,19 @@ class JvmPipeTransport : Transport {
         _isConnected.value = false
     }
     
-    override suspend fun sendAndReceive(data: String, timeoutMs: Long): String = withContext(Dispatchers.IO) {
+    override suspend fun send(data: String) = withContext(Dispatchers.IO) {
         val cmdPipe = commandPipe ?: throw TransportException("Command pipe not connected")
-        val respPipe = responsePipe ?: throw TransportException("Response pipe not connected")
-        try {
-            val bytes = data.toByteArray(StandardCharsets.UTF_8)
-            if (!cmdPipe.write(bytes)) {
-                val error = Kernel32.INSTANCE.GetLastError()
-                _isConnected.value = false
-                throw TransportException("Failed to write to pipe (error: $error)")
-            }
-            val response = respPipe.readLineWithTimeout(timeoutMs)
-            if (response == null) {
-                _isConnected.value = false
-                throw TransportException("Response timeout (${timeoutMs}ms)")
-            }
-            response
-        } catch (e: TransportException) {
-            throw e
-        } catch (e: Exception) {
+        val bytes = data.toByteArray(StandardCharsets.UTF_8)
+        if (!cmdPipe.write(bytes)) {
+            val error = Kernel32.INSTANCE.GetLastError()
             _isConnected.value = false
-            throw TransportException("Transport error: ${e.message}", e)
+            throw TransportException("Failed to write to pipe (error: $error)")
         }
+    }
+
+    override suspend fun receive(timeoutMs: Long): String? = withContext(Dispatchers.IO) {
+        val respPipe = responsePipe ?: throw TransportException("Response pipe not connected")
+        respPipe.readLineWithTimeout(timeoutMs, responseBuffer)
     }
     
     override fun receiveActions(): Flow<String> = flow {
