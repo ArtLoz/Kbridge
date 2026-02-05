@@ -64,6 +64,13 @@ interface L2Control {
     suspend fun inventory(): List<L2Item>
 
     /**
+     * Get Quest inventory of user character.
+     * Получить квест инвентарь персонажа пользователя.
+     */
+
+    suspend fun questInventory(): List<L2Item>
+
+    /**
      * Get character skills list.
      * Получить список умений персонажа.
      */

@@ -152,9 +152,6 @@ internal class L2BotImpl internal constructor(
         return result["text"]?.jsonPrimitive?.content ?: ""
     }
 
-    override suspend fun npcList(): List<L2Npc> {
-        return rpcClient.call("Engine.GetNpcList")
-    }
 
     override suspend fun moveTo(x: Int, y: Int, z: Int, timeout: Int) : Boolean {
         return rpcClient.call(
@@ -1269,6 +1266,9 @@ internal class L2BotImpl internal constructor(
     }
 
     override suspend fun inventory(): List<L2Item> {
+        return rpcClient.call("Engine.GetQuestInventoryList")
+    }
+    override suspend fun questInventory(): List<L2Item> {
         return rpcClient.call("Engine.GetInventoryList")
     }
 
@@ -1282,5 +1282,8 @@ internal class L2BotImpl internal constructor(
 
     override suspend fun dropList(): List<L2Drop> {
         return rpcClient.call("Engine.GetDropList")
+    }
+    override suspend fun npcList(): List<L2Npc> {
+        return rpcClient.call("Engine.GetNpcList")
     }
 }
