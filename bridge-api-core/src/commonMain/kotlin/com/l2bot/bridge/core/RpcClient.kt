@@ -1,13 +1,12 @@
-package com.l2bot.bridge.api
+package com.l2bot.bridge.core
 
 import com.l2bot.bridge.models.rpc.L2RpcException
-import com.l2bot.bridge.protocol.Transport
 import com.l2bot.bridge.models.rpc.RpcRequest
 import com.l2bot.bridge.models.rpc.RpcResponse
+import com.l2bot.bridge.protocol.Transport
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -16,7 +15,7 @@ import kotlinx.serialization.serializer
 /**
  * Thread-safe RPC client for communicating with the Delphi backend via Transport.
  */
-class RpcClient(
+internal class RpcClient(
     @PublishedApi internal val transport: Transport
 ) {
     @PublishedApi internal val json = Json {

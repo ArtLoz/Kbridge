@@ -31,8 +31,8 @@ bot.actionEvents.collect { println("Action: ${it.actionId}") }
 maven { url = uri("https://jitpack.io") }
 
 dependencies {
-    implementation("com.github.ArtLoz.Kbridge:bridge-api-core:1.0.1")
-    implementation("com.github.ArtLoz.Kbridge:bridge-transport-jvm:1.0.1")
+    implementation("com.github.ArtLoz.Kbridge:bridge-api-core:1.0.2")
+    implementation("com.github.ArtLoz.Kbridge:bridge-transport-jvm:1.0.2")
 }
 ```
 
@@ -78,8 +78,7 @@ l2bot_commands_{char}   → RPC запросы
 l2bot_responses_{char}  → RPC ответы
 l2bot_actions_{char}    → События действий
 l2bot_packets_{char}    → Серверные пакеты
-l2bot_clipackets_{char} → Клиентские пакеты
-```
+l2bot_clipackets_{char} → Клиентские пакеты```
 
 **Формат RPC:**
 ```json

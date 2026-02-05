@@ -26,10 +26,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 /**
- * Base controller class for L2 bot operations.
- * Базовый класс контроллера для операций L2 бота.
+ * Base controller interface for L2 bot operations.
+ * Базовый интерфейс контроллера для операций L2 бота.
  */
-abstract class L2Control {
+interface L2Control {
 
     // ==================== Data Retrieval / Получение данных ====================
 
@@ -37,49 +37,49 @@ abstract class L2Control {
      * Get user character information.
      * Получить информацию о персонаже пользователя.
      */
-    abstract suspend fun user(): L2User
+    suspend fun user(): L2User
 
     /**
      * Echo test - returns the sent text back.
      * Тест эхо - возвращает отправленный текст обратно.
      */
-    abstract suspend fun echo(text: String): String
+    suspend fun echo(text: String): String
 
     /**
      * Get list of NPCs around character.
      * Получить список НПЦ вокруг персонажа.
      */
-    abstract suspend fun npcList(): List<L2Npc>
+    suspend fun npcList(): List<L2Npc>
 
     /**
      * Get list of user pets and summons.
      * Получить список питомцев и саммонов пользователя.
      */
-    abstract suspend fun petList(): List<L2Pet>
+    suspend fun petList(): List<L2Pet>
 
     /**
      * Get inventory of user character.
      * Получить инвентарь персонажа пользователя.
      */
-    abstract suspend fun inventory(): List<L2Item>
+    suspend fun inventory(): List<L2Item>
 
     /**
      * Get character skills list.
      * Получить список умений персонажа.
      */
-    abstract suspend fun skillList(): List<L2Skill>
+    suspend fun skillList(): List<L2Skill>
 
     /**
      * Get list of players around character.
      * Получить список игроков вокруг персонажа.
      */
-    abstract suspend fun charList(): List<L2Char>
+    suspend fun charList(): List<L2Char>
 
     /**
      * Get list of drop/items laying on the ground.
      * Получить список дропа/предметов на земле.
      */
-    abstract suspend fun dropList(): List<L2Drop>
+    suspend fun dropList(): List<L2Drop>
 
     // ==================== Movement / Перемещение ====================
 
@@ -92,7 +92,7 @@ abstract class L2Control {
      * @param z Z coordinate / Z координата
      * @param timeout Movement timeout in ms / Таймаут движения в мс
      */
-    abstract suspend fun moveTo(x: Int, y: Int, z: Int, timeout: Int = 8000): Boolean
+    suspend fun moveTo(x: Int, y: Int, z: Int, timeout: Int = 8000): Boolean
 
     /**
      * Move to object.
@@ -101,7 +101,7 @@ abstract class L2Control {
      * @param obj Target object / Целевой объект
      * @param delta Distance offset / Смещение дистанции
      */
-    abstract suspend fun moveTo(obj: L2Spawn, delta: Int = -70): Boolean
+    suspend fun moveTo(obj: L2Spawn, delta: Int = -70): Boolean
 
     /**
      * Move to current target.
@@ -109,13 +109,13 @@ abstract class L2Control {
      *
      * @param delta Distance offset / Смещение дистанции
      */
-    abstract suspend fun moveToTarget(delta: Int = -100): Boolean
+    suspend fun moveToTarget(delta: Int = -100): Boolean
 
     /**
      * Use return to village (/unstuck).
      * Использовать возврат в город (/unstuck).
      */
-    abstract suspend fun unstuck(): Boolean
+    suspend fun unstuck(): Boolean
 
     /**
      * Resurrect (to village / to clan hall / ...).
@@ -123,7 +123,7 @@ abstract class L2Control {
      *
      * @param type Restart type / Тип воскрешения
      */
-    abstract suspend fun goHome(type: RestartType = RestartType.TOWN): Boolean
+    suspend fun goHome(type: RestartType = RestartType.TOWN): Boolean
 
     /**
      * Teleport to location. For new game chronicles.
@@ -131,7 +131,7 @@ abstract class L2Control {
      *
      * @param id Teleport location ID / ID локации телепорта
      */
-    abstract suspend fun teleport(id: Long): Boolean
+    suspend fun teleport(id: Long): Boolean
 
     // ==================== Actions / Действия ====================
 
@@ -143,7 +143,7 @@ abstract class L2Control {
      * @param force Force attack / Принудительная атака
      * @param shift Shift modifier / Модификатор Shift
      */
-    abstract suspend fun useAction(id: Long, force: Boolean = false, shift: Boolean = false): Boolean
+    suspend fun useAction(id: Long, force: Boolean = false, shift: Boolean = false): Boolean
 
     /**
      * Attack target.
@@ -152,7 +152,7 @@ abstract class L2Control {
      * @param pauseTime Pause time between attacks in ms / Пауза между атаками в мс
      * @param force Force attack / Принудительная атака
      */
-    abstract suspend fun attack(pauseTime: Long = 2000L, force: Boolean = false): Boolean
+    suspend fun attack(pauseTime: Long = 2000L, force: Boolean = false): Boolean
 
     /**
      * Pickup drop/item laying on the ground.
@@ -161,13 +161,13 @@ abstract class L2Control {
      * @param item Item to pickup / Предмет для подбора
      * @param byPet Pickup by pet / Подобрать питомцем
      */
-    abstract suspend fun pickUp(item: L2Drop, byPet: Boolean = false): Boolean
+    suspend fun pickUp(item: L2Drop, byPet: Boolean = false): Boolean
 
     /**
      * Stand up.
      * Встать.
      */
-    abstract suspend fun stand(): Boolean
+    suspend fun stand(): Boolean
 
     // ==================== Targeting / Нацеливание ====================
 
@@ -177,7 +177,7 @@ abstract class L2Control {
      *
      * @param name Target name / Имя цели
      */
-    abstract suspend fun setTarget(name: String): Boolean
+    suspend fun setTarget(name: String): Boolean
 
     /**
      * Target object by ID.
@@ -185,7 +185,7 @@ abstract class L2Control {
      *
      * @param id Target ID / ID цели
      */
-    abstract suspend fun setTargetId(id: Long): Boolean
+    suspend fun setTargetId(id: Long): Boolean
 
     /**
      * Target object.
@@ -193,7 +193,7 @@ abstract class L2Control {
      *
      * @param obj Target object / Целевой объект
      */
-    abstract suspend fun setTarget(obj: L2Live): Boolean
+    suspend fun setTarget(obj: L2Live): Boolean
 
     /**
      * Target object. Without waiting for server answer.
@@ -202,13 +202,13 @@ abstract class L2Control {
      * @param oid Object ID / ID объекта
      * @param force Force action / Принудительное действие
      */
-    abstract suspend fun action(oid: Long, force: Boolean = false): Boolean
+    suspend fun action(oid: Long, force: Boolean = false): Boolean
 
     /**
      * Cancel target.
      * Сбросить цель.
      */
-    abstract suspend fun cancelTarget(): Boolean
+    suspend fun cancelTarget(): Boolean
 
     /**
      * Target another object's target (assist).
@@ -216,7 +216,7 @@ abstract class L2Control {
      *
      * @param name Player name to assist / Имя игрока для ассиста
      */
-    abstract suspend fun assist(name: String): Boolean
+    suspend fun assist(name: String): Boolean
 
     /**
      * Search attacking enemy of object.
@@ -226,7 +226,7 @@ abstract class L2Control {
      * @param range Search range / Радиус поиска
      * @param zLimit Z-axis limit / Ограничение по оси Z
      */
-    abstract suspend fun findEnemy(obj: L2Live, range: Long = 2000L, zLimit: Long = 300L): L2Live?
+    suspend fun findEnemy(obj: L2Live, range: Long = 2000L, zLimit: Long = 300L): L2Live?
 
     /**
      * Activate automatic targeting.
@@ -236,7 +236,7 @@ abstract class L2Control {
      * @param zLimit Z-axis limit / Ограничение по оси Z
      * @param notBusy Only not busy targets / Только свободные цели
      */
-    abstract suspend fun autoTarget(range: Long = 2000L, zLimit: Long = 300L, notBusy: Boolean = true): Boolean
+    suspend fun autoTarget(range: Long = 2000L, zLimit: Long = 300L, notBusy: Boolean = true): Boolean
 
     /**
      * Add object to bot ignoring list.
@@ -244,13 +244,13 @@ abstract class L2Control {
      *
      * @param obj Object to ignore / Объект для игнорирования
      */
-    abstract suspend fun ignore(obj: L2Spawn)
+    suspend fun ignore(obj: L2Spawn)
 
     /**
      * Clear list of ignored objects.
      * Очистить список игнорируемых объектов.
      */
-    abstract suspend fun clearIgnore()
+    suspend fun clearIgnore()
 
     /**
      * Check if NPC is already attacked by another player.
@@ -258,7 +258,7 @@ abstract class L2Control {
      *
      * @param obj NPC to check / НПЦ для проверки
      */
-    abstract suspend fun isBusy(obj: L2Npc): Boolean
+    suspend fun isBusy(obj: L2Npc): Boolean
 
     // ==================== Skills / Умения ====================
 
@@ -270,7 +270,7 @@ abstract class L2Control {
      * @param force Force cast / Принудительное использование
      * @param shift Shift modifier / Модификатор Shift
      */
-    abstract suspend fun useSkill(id: Long, force: Boolean = false, shift: Boolean = false): Boolean
+    suspend fun useSkill(id: Long, force: Boolean = false, shift: Boolean = false): Boolean
 
     /**
      * Use skill. Without waiting for cast ending and server answer.
@@ -280,7 +280,7 @@ abstract class L2Control {
      * @param force Force cast / Принудительное использование
      * @param shift Shift modifier / Модификатор Shift
      */
-    abstract suspend fun dUseSkill(id: Long, force: Boolean = false, shift: Boolean = false): Boolean
+    suspend fun dUseSkill(id: Long, force: Boolean = false, shift: Boolean = false): Boolean
 
     /**
      * Use skill on ground (AoE).
@@ -293,13 +293,13 @@ abstract class L2Control {
      * @param force Force cast / Принудительное использование
      * @param shift Shift modifier / Модификатор Shift
      */
-    abstract suspend fun useSkillGround(id: Long, x: Int, y: Int, z: Int, force: Boolean = false, shift: Boolean = false): Boolean
+    suspend fun useSkillGround(id: Long, x: Int, y: Int, z: Int, force: Boolean = false, shift: Boolean = false): Boolean
 
     /**
      * Interrupt skill cast.
      * Прервать использование умения.
      */
-    abstract suspend fun stopCasting(): Boolean
+    suspend fun stopCasting(): Boolean
 
     /**
      * Dispel buff.
@@ -307,7 +307,7 @@ abstract class L2Control {
      *
      * @param id Buff ID to dispel / ID баффа для отмены
      */
-    abstract suspend fun dispel(id: Long): Boolean
+    suspend fun dispel(id: Long): Boolean
 
     /**
      * Learn skill.
@@ -315,13 +315,13 @@ abstract class L2Control {
      *
      * @param id Skill ID to learn / ID умения для изучения
      */
-    abstract suspend fun learnSkill(id: Long): Boolean
+    suspend fun learnSkill(id: Long): Boolean
 
     /**
      * Update skill list.
      * Обновить список умений.
      */
-    abstract suspend fun updateSkillList(): Boolean
+    suspend fun updateSkillList(): Boolean
 
     // ==================== Items / Предметы ====================
 
@@ -333,7 +333,7 @@ abstract class L2Control {
      * @param byPet Use by pet / Использовать питомцем
      * @param force Force use / Принудительное использование
      */
-    abstract suspend fun useItem(obj: L2Item, byPet: Boolean = false, force: Boolean = false): Boolean
+    suspend fun useItem(obj: L2Item, byPet: Boolean = false, force: Boolean = false): Boolean
 
     /**
      * Use item by name.
@@ -343,7 +343,7 @@ abstract class L2Control {
      * @param byPet Use by pet / Использовать питомцем
      * @param force Force use / Принудительное использование
      */
-    abstract suspend fun useItem(name: String, byPet: Boolean = false, force: Boolean = false): Boolean
+    suspend fun useItem(name: String, byPet: Boolean = false, force: Boolean = false): Boolean
 
     /**
      * Use item by ID.
@@ -353,7 +353,7 @@ abstract class L2Control {
      * @param byPet Use by pet / Использовать питомцем
      * @param force Force use / Принудительное использование
      */
-    abstract suspend fun useItem(id: Long, byPet: Boolean = false, force: Boolean = false): Boolean
+    suspend fun useItem(id: Long, byPet: Boolean = false, force: Boolean = false): Boolean
 
     /**
      * Use item by unique identifier (OID).
@@ -363,7 +363,7 @@ abstract class L2Control {
      * @param byPet Use by pet / Использовать питомцем
      * @param force Force use / Принудительное использование
      */
-    abstract suspend fun useItemOid(oid: Long, byPet: Boolean = false, force: Boolean = false): Boolean
+    suspend fun useItemOid(oid: Long, byPet: Boolean = false, force: Boolean = false): Boolean
 
     /**
      * Delete item by name.
@@ -372,7 +372,7 @@ abstract class L2Control {
      * @param name Item name / Имя предмета
      * @param count Amount to delete / Количество для удаления
      */
-    abstract suspend fun destroyItem(name: String, count: Long): Boolean
+    suspend fun destroyItem(name: String, count: Long): Boolean
 
     /**
      * Delete item by ID.
@@ -381,7 +381,7 @@ abstract class L2Control {
      * @param id Item ID / ID предмета
      * @param count Amount to delete / Количество для удаления
      */
-    abstract suspend fun destroyItem(id: Int, count: Long): Boolean
+    suspend fun destroyItem(id: Int, count: Long): Boolean
 
     /**
      * Delete item by object.
@@ -390,7 +390,7 @@ abstract class L2Control {
      * @param item Item object / Объект предмета
      * @param count Amount to delete / Количество для удаления
      */
-    abstract suspend fun destroyItem(item: L2Item, count: Long): Boolean
+    suspend fun destroyItem(item: L2Item, count: Long): Boolean
 
     /**
      * Drop item on ground.
@@ -402,7 +402,7 @@ abstract class L2Control {
      * @param y Y coordinate / Y координата
      * @param z Z coordinate / Z координата
      */
-    abstract suspend fun dropItem(id: Long, count: Long, x: Int, y: Int, z: Int): Boolean
+    suspend fun dropItem(id: Long, count: Long, x: Int, y: Int, z: Int): Boolean
 
     /**
      * Craft item.
@@ -410,7 +410,7 @@ abstract class L2Control {
      *
      * @param index Recipe index / Индекс рецепта
      */
-    abstract suspend fun makeItem(index: Long): Boolean
+    suspend fun makeItem(index: Long): Boolean
 
     /**
      * Crystallize item by ID.
@@ -418,7 +418,7 @@ abstract class L2Control {
      *
      * @param id Item ID / ID предмета
      */
-    abstract suspend fun crystalItem(id: Long): Boolean
+    suspend fun crystalItem(id: Long): Boolean
 
     /**
      * Crystallize item by object.
@@ -426,7 +426,7 @@ abstract class L2Control {
      *
      * @param item Item object / Объект предмета
      */
-    abstract suspend fun crystalItem(item: L2Item): Boolean
+    suspend fun crystalItem(item: L2Item): Boolean
 
     /**
      * Move item between user and pet.
@@ -436,7 +436,7 @@ abstract class L2Control {
      * @param count Amount to move / Количество для передачи
      * @param toPet Move to pet (true) or from pet (false) / Передать питомцу (true) или от питомца (false)
      */
-    abstract suspend fun moveItem(name: String, count: Long, toPet: Boolean): Boolean
+    suspend fun moveItem(name: String, count: Long, toPet: Boolean): Boolean
 
     /**
      * Move items between user and warehouse.
@@ -445,7 +445,7 @@ abstract class L2Control {
      * @param toWh Move to warehouse (true) or from warehouse (false) / Передать на склад (true) или со склада (false)
      * @param ids List of item IDs / Список ID предметов
      */
-    abstract suspend fun loadItems(toWh: Boolean, ids: List<Long>): Boolean
+    suspend fun loadItems(toWh: Boolean, ids: List<Long>): Boolean
 
     /**
      * Enable/disable automatic soulshots.
@@ -454,7 +454,7 @@ abstract class L2Control {
      * @param name Soulshot name / Название заряда
      * @param active Enable (true) or disable (false) / Включить (true) или выключить (false)
      */
-    abstract suspend fun autoSoulShot(name: String, active: Boolean): Boolean
+    suspend fun autoSoulShot(name: String, active: Boolean): Boolean
 
     /**
      * Enable/disable automatic soulshots. Without waiting.
@@ -463,7 +463,7 @@ abstract class L2Control {
      * @param id Soulshot ID / ID заряда
      * @param active Enable (true) or disable (false) / Включить (true) или выключить (false)
      */
-    abstract suspend fun dAutoSoulShot(id: Long, active: Boolean): Boolean
+    suspend fun dAutoSoulShot(id: Long, active: Boolean): Boolean
 
     /**
      * Get equipped items count by name.
@@ -471,7 +471,7 @@ abstract class L2Control {
      *
      * @param name Item name / Имя предмета
      */
-    abstract suspend fun equipped(name: String): Int
+    suspend fun equipped(name: String): Int
 
     // ==================== Pets & Summons / Питомцы и саммоны ====================
 
@@ -479,13 +479,13 @@ abstract class L2Control {
      * Dismiss pet.
      * Отозвать питомца.
      */
-    abstract suspend fun dismissPet(): Boolean
+    suspend fun dismissPet(): Boolean
 
     /**
      * Dismiss summon.
      * Отозвать слугу/саммона.
      */
-    abstract suspend fun dismissSum(): Boolean
+    suspend fun dismissSum(): Boolean
 
     // ==================== Social / Социальное ====================
 
@@ -497,7 +497,7 @@ abstract class L2Control {
      * @param chatType Chat type / Тип чата
      * @param playerName Player name for whisper / Имя игрока для приватного сообщения
      */
-    abstract suspend fun say(text: String, chatType: ChatType, playerName: String = ""): Boolean
+    suspend fun say(text: String, chatType: ChatType, playerName: String = ""): Boolean
 
     /**
      * Invite player to group/party.
@@ -506,7 +506,7 @@ abstract class L2Control {
      * @param name Player name / Имя игрока
      * @param lootMode Loot distribution mode / Режим распределения добычи
      */
-    abstract suspend fun inviteParty(name: String, lootMode: LootType = LootType.LOOTER): Boolean
+    suspend fun inviteParty(name: String, lootMode: LootType = LootType.LOOTER): Boolean
 
     /**
      * Dismiss player from group/party.
@@ -514,7 +514,7 @@ abstract class L2Control {
      *
      * @param name Player name / Имя игрока
      */
-    abstract suspend fun dismissParty(name: String): Boolean
+    suspend fun dismissParty(name: String): Boolean
 
     /**
      * Answer to group/party invite.
@@ -522,13 +522,13 @@ abstract class L2Control {
      *
      * @param accept Accept (true) or decline (false) / Принять (true) или отклонить (false)
      */
-    abstract suspend fun joinParty(accept: Boolean): Boolean
+    suspend fun joinParty(accept: Boolean): Boolean
 
     /**
      * Leave from party.
      * Выйти из группы.
      */
-    abstract suspend fun leaveParty(): Boolean
+    suspend fun leaveParty(): Boolean
 
     /**
      * Transfer group/party leader status.
@@ -536,25 +536,25 @@ abstract class L2Control {
      *
      * @param name New leader name / Имя нового лидера
      */
-    abstract suspend fun setPartyLeader(name: String): Boolean
+    suspend fun setPartyLeader(name: String): Boolean
 
     /**
      * Get mentor name.
      * Получить имя наставника.
      */
-    abstract suspend fun getMentor(): String
+    suspend fun getMentor(): String
 
     /**
      * Leave mentor.
      * Покинуть наставника.
      */
-    abstract suspend fun kickMentor(): Boolean
+    suspend fun kickMentor(): Boolean
 
     /**
      * Close group/party room.
      * Закрыть комнату группы/пати.
      */
-    abstract suspend fun closeRoom(): Boolean
+    suspend fun closeRoom(): Boolean
 
     /**
      * Create group/party room.
@@ -564,7 +564,7 @@ abstract class L2Control {
      * @param minLevel Minimum level / Минимальный уровень
      * @param maxLevel Maximum level / Максимальный уровень
      */
-    abstract suspend fun createRoom(caption: String, minLevel: Int = 1, maxLevel: Int = 110): Boolean
+    suspend fun createRoom(caption: String, minLevel: Int = 1, maxLevel: Int = 110): Boolean
 
     /**
      * Activate automatic entry to clan.
@@ -572,7 +572,7 @@ abstract class L2Control {
      *
      * @param players List of players to auto-accept / Список игроков для автопринятия
      */
-    abstract suspend fun autoAcceptClan(players: List<String>): Boolean
+    suspend fun autoAcceptClan(players: List<String>): Boolean
 
     /**
      * Activate automatic entry to command channel.
@@ -580,7 +580,7 @@ abstract class L2Control {
      *
      * @param players List of players to auto-accept / Список игроков для автопринятия
      */
-    abstract suspend fun autoAcceptCC(players: List<String>): Boolean
+    suspend fun autoAcceptCC(players: List<String>): Boolean
 
     /**
      * Activate automatic accept mentors.
@@ -588,7 +588,7 @@ abstract class L2Control {
      *
      * @param players List of mentors to auto-accept / Список наставников для автопринятия
      */
-    abstract suspend fun autoAcceptMentors(players: List<String>): Boolean
+    suspend fun autoAcceptMentors(players: List<String>): Boolean
 
     // ==================== Quests / Квесты ====================
 
@@ -599,7 +599,7 @@ abstract class L2Control {
      * @param id Quest ID / ID квеста
      * @return Quest stage / Этап квеста
      */
-    abstract suspend fun questStatus(id: Long): Long
+    suspend fun questStatus(id: Long): Long
 
     /**
      * Check quest stage.
@@ -609,7 +609,7 @@ abstract class L2Control {
      * @param stage Stage to check / Этап для проверки
      * @return true if quest is at specified stage / true если квест на указанном этапе
      */
-    abstract suspend fun questStatus(id: Long, stage: Long): Boolean
+    suspend fun questStatus(id: Long, stage: Long): Boolean
 
     /**
      * Cancel quest.
@@ -617,19 +617,19 @@ abstract class L2Control {
      *
      * @param id Quest ID / ID квеста
      */
-    abstract suspend fun cancelQuest(id: Int): Boolean
+    suspend fun cancelQuest(id: Int): Boolean
 
     /**
      * Opens quest 'question mark'.
      * Открыть квестовый 'знак вопроса'.
      */
-    abstract suspend fun openQuestion(): Boolean
+    suspend fun openQuestion(): Boolean
 
     /**
      * Get all daily items/rewards.
      * Получить все ежедневные предметы/награды.
      */
-    abstract suspend fun getDailyItems(): Boolean
+    suspend fun getDailyItems(): Boolean
 
     /**
      * Get one of the daily rewards.
@@ -637,13 +637,13 @@ abstract class L2Control {
      *
      * @param id Daily reward ID / ID ежедневной награды
      */
-    abstract suspend fun getDailyItem(id: Long): Boolean
+    suspend fun getDailyItem(id: Long): Boolean
 
     /**
      * Update daily rewards list.
      * Обновить список ежедневных наград.
      */
-    abstract suspend fun updateDailyList(): Boolean
+    suspend fun updateDailyList(): Boolean
 
     // ==================== Dialogs / Диалоги ====================
 
@@ -653,7 +653,7 @@ abstract class L2Control {
      *
      * @param timeout Timeout in ms / Таймаут в мс
      */
-    abstract suspend fun dlgOpen(timeout: Long = 5000): Boolean
+    suspend fun dlgOpen(timeout: Long = 5000): Boolean
 
     /**
      * Select dialog option by index.
@@ -661,7 +661,7 @@ abstract class L2Control {
      *
      * @param index Option index / Индекс пункта
      */
-    abstract suspend fun dlgSel(index: Int): Boolean
+    suspend fun dlgSel(index: Int): Boolean
 
     /**
      * Select dialog option by caption/text.
@@ -670,7 +670,7 @@ abstract class L2Control {
      * @param caption Option text / Текст пункта
      * @param timeout Timeout in ms / Таймаут в мс
      */
-    abstract suspend fun dlgSel(caption: String, timeout: Int = 1000): Boolean
+    suspend fun dlgSel(caption: String, timeout: Int = 1000): Boolean
 
     /**
      * Send command/bypass to server.
@@ -678,49 +678,49 @@ abstract class L2Control {
      *
      * @param text Bypass text / Текст bypass
      */
-    abstract suspend fun bypassToServer(text: String): Boolean
+    suspend fun bypassToServer(text: String): Boolean
 
     /**
      * Get common dialog text.
      * Получить текст обычного диалога.
      */
-    abstract suspend fun dlgText(): String
+    suspend fun dlgText(): String
 
     /**
      * Get last common dialog appearing time moment.
      * Получить момент времени появления последнего диалога.
      */
-    abstract suspend fun dlgTime(): Long
+    suspend fun dlgTime(): Long
 
     /**
      * Get Community Board (Alt+B) dialog text.
      * Получить текст Community Board (Alt+B) диалога.
      */
-    abstract suspend fun cbText(): String
+    suspend fun cbText(): String
 
     /**
      * Get last Community Board appearing time moment.
      * Получить момент времени появления последнего Community Board.
      */
-    abstract suspend fun cbTime(): Long
+    suspend fun cbTime(): Long
 
     /**
      * Get help dialog text.
      * Получить текст диалога помощи.
      */
-    abstract suspend fun hlpText(): String
+    suspend fun hlpText(): String
 
     /**
      * Get last help dialog appearing time moment.
      * Получить момент времени появления последнего диалога помощи.
      */
-    abstract suspend fun hlpTime(): Long
+    suspend fun hlpTime(): Long
 
     /**
      * Get dialog with accept ability (confirm dialog).
      * Получить диалог с возможностью подтверждения.
      */
-    abstract suspend fun getConfirmDlg(): L2ConfirmDlg?
+    suspend fun getConfirmDlg(): L2ConfirmDlg?
 
     /**
      * Accept/reject confirm dialog.
@@ -728,7 +728,7 @@ abstract class L2Control {
      *
      * @param accept Accept (true) or reject (false) / Подтвердить (true) или отклонить (false)
      */
-    abstract suspend fun confirmDialog(accept: Boolean): Boolean
+    suspend fun confirmDialog(accept: Boolean): Boolean
 
     // ==================== Trade / Торговля ====================
 
@@ -740,7 +740,7 @@ abstract class L2Control {
      * @param storeType Store type / Тип лавки
      * @param caption Store caption / Название лавки
      */
-    abstract suspend fun openPrivateStore(items: List<Long>, storeType: Int, caption: String): Boolean
+    suspend fun openPrivateStore(items: List<Long>, storeType: Int, caption: String): Boolean
 
     /**
      * Buy/sell items to NPC.
@@ -749,7 +749,7 @@ abstract class L2Control {
      * @param sell Sell (true) or buy (false) / Продать (true) или купить (false)
      * @param items List of item data / Список данных предметов
      */
-    abstract suspend fun npcTrade(sell: Boolean, items: List<Long>): Boolean
+    suspend fun npcTrade(sell: Boolean, items: List<Long>): Boolean
 
     /**
      * Exchange items with NPC / dimensional merchant.
@@ -759,7 +759,7 @@ abstract class L2Control {
      * @param count Amount to exchange / Количество для обмена
      * @param byIndex Use index instead of ID / Использовать индекс вместо ID
      */
-    abstract suspend fun npcExchange(idOrIndex: Long, count: Long = 1, byIndex: Boolean = false): Boolean
+    suspend fun npcExchange(idOrIndex: Long, count: Long = 1, byIndex: Boolean = false): Boolean
 
     /**
      * Get town tax percentage.
@@ -767,7 +767,7 @@ abstract class L2Control {
      *
      * @param townId Town ID / ID города
      */
-    abstract suspend fun castleTax(townId: Long): Int
+    suspend fun castleTax(townId: Long): Int
 
     // ==================== Mail / Почта ====================
 
@@ -781,7 +781,7 @@ abstract class L2Control {
      * @param items List of attached items / Список прикрепленных предметов
      * @param price COD price / Цена наложенного платежа
      */
-    abstract suspend fun sendMail(receiver: String, topic: String, text: String, items: List<Long> = emptyList(), price: Long = 0): Boolean
+    suspend fun sendMail(receiver: String, topic: String, text: String, items: List<Long> = emptyList(), price: Long = 0): Boolean
 
     /**
      * Get mail items/attachments.
@@ -790,7 +790,7 @@ abstract class L2Control {
      * @param maxLoad Maximum load weight / Максимальный вес загрузки
      * @param maxCount Maximum item count / Максимальное количество предметов
      */
-    abstract suspend fun getMailItems(maxLoad: Long = 65, maxCount: Long = 1000): Boolean
+    suspend fun getMailItems(maxLoad: Long = 65, maxCount: Long = 1000): Boolean
 
     // ==================== Zone & Time / Зона и время ====================
 
@@ -798,7 +798,7 @@ abstract class L2Control {
      * Get current game zone type.
      * Получить тип текущей игровой зоны.
      */
-    abstract suspend fun getZoneType(): ZoneType
+    suspend fun getZoneType(): ZoneType
 
     /**
      * Get location name by coordinates.
@@ -808,7 +808,7 @@ abstract class L2Control {
      * @param y Y coordinate / Y координата
      * @param z Z coordinate / Z координата
      */
-    abstract suspend fun getZoneName(x: Int, y: Int, z: Int): String
+    suspend fun getZoneName(x: Int, y: Int, z: Int): String
 
     /**
      * Get location ID by coordinates.
@@ -818,7 +818,7 @@ abstract class L2Control {
      * @param y Y coordinate / Y координата
      * @param z Z coordinate / Z координата
      */
-    abstract suspend fun getZoneID(x: Int, y: Int, z: Int): Long
+    suspend fun getZoneID(x: Int, y: Int, z: Int): Long
 
     /**
      * Check if point is in zone configured on bot map.
@@ -828,7 +828,7 @@ abstract class L2Control {
      * @param y Y coordinate / Y координата
      * @param z Z coordinate / Z координата
      */
-    abstract suspend fun inZone(x: Int, y: Int, z: Int): Boolean
+    suspend fun inZone(x: Int, y: Int, z: Int): Boolean
 
     /**
      * Check if object is in zone configured on bot map.
@@ -836,19 +836,19 @@ abstract class L2Control {
      *
      * @param obj Object to check / Объект для проверки
      */
-    abstract suspend fun inZone(obj: L2Spawn): Boolean
+    suspend fun inZone(obj: L2Spawn): Boolean
 
     /**
      * Get current game time (in minutes).
      * Получить текущее игровое время (в минутах).
      */
-    abstract suspend fun gameTime(): Long
+    suspend fun gameTime(): Long
 
     /**
      * Check if it is day time in game.
      * Проверить, является ли время в игре дневным.
      */
-    abstract suspend fun isDay(): Boolean
+    suspend fun isDay(): Boolean
 
     // ==================== Account Status / Статус аккаунта ====================
 
@@ -856,13 +856,13 @@ abstract class L2Control {
      * Get account status.
      * Получить статус аккаунта.
      */
-    abstract suspend fun getStatus(): L2Status
+    suspend fun getStatus(): L2Status
 
     /**
      * Get account login stage.
      * Получить этап загрузки аккаунта.
      */
-    abstract suspend fun loginStatus(): Int
+    suspend fun loginStatus(): Int
 
     /**
      * Enter account login and password.
@@ -871,7 +871,7 @@ abstract class L2Control {
      * @param login Account login / Логин аккаунта
      * @param password Account password / Пароль аккаунта
      */
-    abstract suspend fun authLogin(login: String, password: String): Boolean
+    suspend fun authLogin(login: String, password: String): Boolean
 
     /**
      * Select character on character selection screen.
@@ -879,19 +879,19 @@ abstract class L2Control {
      *
      * @param charIndex Character index (-1 for last used) / Индекс персонажа (-1 для последнего использованного)
      */
-    abstract suspend fun gameStart(charIndex: Int = -1): Boolean
+    suspend fun gameStart(charIndex: Int = -1): Boolean
 
     /**
      * Logout to character selecting screen.
      * Выйти на экран выбора персонажей.
      */
-    abstract suspend fun restart(): Boolean
+    suspend fun restart(): Boolean
 
     /**
      * Logout to character selecting screen. Without waiting.
      * Выйти на экран выбора персонажей. Без ожидания.
      */
-    abstract suspend fun dRestart(): Boolean
+    suspend fun dRestart(): Boolean
 
     // ==================== Bot Settings / Настройки бота ====================
 
@@ -902,7 +902,7 @@ abstract class L2Control {
      * @param id Module ID / ID модуля
      * @param active Activate (true) or deactivate (false) / Активировать (true) или деактивировать (false)
      */
-    abstract suspend fun setFaceControl(id: Int, active: Boolean): Boolean
+    suspend fun setFaceControl(id: Int, active: Boolean): Boolean
 
     /**
      * Get bot settings module state.
@@ -910,7 +910,7 @@ abstract class L2Control {
      *
      * @param id Module ID / ID модуля
      */
-    abstract suspend fun getFaceState(id: Int): Boolean
+    suspend fun getFaceState(id: Int): Boolean
 
     /**
      * Update (reread) bot settings.
@@ -918,7 +918,7 @@ abstract class L2Control {
      *
      * @param wait Wait for completion / Ожидать завершения
      */
-    abstract suspend fun updateCfg(wait: Boolean = true): Boolean
+    suspend fun updateCfg(wait: Boolean = true): Boolean
 
     /**
      * Load bot settings from file.
@@ -926,7 +926,7 @@ abstract class L2Control {
      *
      * @param filePath Path to settings file / Путь к файлу настроек
      */
-    abstract suspend fun loadConfig(filePath: String): Boolean
+    suspend fun loadConfig(filePath: String): Boolean
 
     /**
      * Load bot map zones settings from file.
@@ -934,13 +934,13 @@ abstract class L2Control {
      *
      * @param filePath Path to zones file / Путь к файлу зон
      */
-    abstract suspend fun loadZone(filePath: String): Boolean
+    suspend fun loadZone(filePath: String): Boolean
 
     /**
      * Clear zones on bot map.
      * Очистить зоны на карте бота.
      */
-    abstract suspend fun clearZone(): Boolean
+    suspend fun clearZone(): Boolean
 
     /**
      * Set performance level for game client.
@@ -948,7 +948,7 @@ abstract class L2Control {
      *
      * @param level Performance level / Уровень производительности
      */
-    abstract suspend fun setPerform(level: Long): Boolean
+    suspend fun setPerform(level: Long): Boolean
 
     /**
      * Change distance that bot will retreat from zone edges.
@@ -956,7 +956,7 @@ abstract class L2Control {
      *
      * @param dist Distance / Дистанция
      */
-    abstract suspend fun setMapKeepDist(dist: Int): Boolean
+    suspend fun setMapKeepDist(dist: Int): Boolean
 
     // ==================== Game Client / Игровой клиент ====================
 
@@ -968,13 +968,13 @@ abstract class L2Control {
      * @param author Author name / Имя автора
      * @param chatType Chat type / Тип чата
      */
-    abstract suspend fun gamePrint(text: String, author: String = "", chatType: Int = 0): Boolean
+    suspend fun gamePrint(text: String, author: String = "", chatType: Int = 0): Boolean
 
     /**
      * Close game client.
      * Закрыть игровой клиент.
      */
-    abstract suspend fun gameClose(): Boolean
+    suspend fun gameClose(): Boolean
 
     /**
      * Activate game client / Adrenaline window blinking.
@@ -982,7 +982,7 @@ abstract class L2Control {
      *
      * @param game Blink game window (true) or Adrenaline window (false) / Мигать окном игры (true) или Adrenaline (false)
      */
-    abstract suspend fun blinkWindow(game: Boolean = true): Boolean
+    suspend fun blinkWindow(game: Boolean = true): Boolean
 
     /**
      * Show/hide game client window.
@@ -990,7 +990,7 @@ abstract class L2Control {
      *
      * @param show Show (true) or hide (false) / Показать (true) или скрыть (false)
      */
-    abstract suspend fun setGameWindow(show: Boolean): Boolean
+    suspend fun setGameWindow(show: Boolean): Boolean
 
     /**
      * Press keyboard button in game client window (by key name).
@@ -999,7 +999,7 @@ abstract class L2Control {
      * @param keyName Key name / Имя клавиши
      * @param downUp Down (0), Up (1), or Both (2) / Нажать (0), Отпустить (1), или Оба (2)
      */
-    abstract suspend fun useKey(keyName: String, downUp: Int = 0): Boolean
+    suspend fun useKey(keyName: String, downUp: Int = 0): Boolean
 
     /**
      * Press keyboard button in game client window (by key code).
@@ -1008,7 +1008,7 @@ abstract class L2Control {
      * @param keyCode Key code / Код клавиши
      * @param downUp Down (0), Up (1), or Both (2) / Нажать (0), Отпустить (1), или Оба (2)
      */
-    abstract suspend fun useKey(keyCode: Int, downUp: Int = 0): Boolean
+    suspend fun useKey(keyCode: Int, downUp: Int = 0): Boolean
 
     /**
      * Type text in game client window.
@@ -1016,7 +1016,7 @@ abstract class L2Control {
      *
      * @param text Text to type / Текст для ввода
      */
-    abstract suspend fun enterText(text: String): Boolean
+    suspend fun enterText(text: String): Boolean
 
     /**
      * Send PostMessage to game client window.
@@ -1026,7 +1026,7 @@ abstract class L2Control {
      * @param wParam wParam value / Значение wParam
      * @param lParam lParam value / Значение lParam
      */
-    abstract suspend fun postMessage(msg: Long, wParam: Int, lParam: Int): Int
+    suspend fun postMessage(msg: Long, wParam: Int, lParam: Int): Int
 
     /**
      * Send SendMessage to game client window.
@@ -1036,37 +1036,37 @@ abstract class L2Control {
      * @param wParam wParam value / Значение wParam
      * @param lParam lParam value / Значение lParam
      */
-    abstract suspend fun sendMessage(msg: Long, wParam: Int, lParam: Int): Int
+    suspend fun sendMessage(msg: Long, wParam: Int, lParam: Int): Int
 
     /**
      * Get path to game client executable file.
      * Получить путь к исполняемому файлу игрового клиента.
      */
-    abstract suspend fun getGamePath(): String
+    suspend fun getGamePath(): String
 
     /**
      * Get game client window handle/identifier.
      * Получить идентификатор/хэндл окна игрового клиента.
      */
-    abstract suspend fun getGameWindowHandle(): Long
+    suspend fun getGameWindowHandle(): Long
 
     /**
      * Get game client hash.
      * Получить хеш игрового клиента.
      */
-    abstract suspend fun getGameHash(): Long
+    suspend fun getGameHash(): Long
 
     /**
      * Get game client protocol version.
      * Получить версию протокола игрового клиента.
      */
-    abstract suspend fun getGameProtocol(): Int
+    suspend fun getGameProtocol(): Int
 
     /**
      * Get game client version.
      * Получить версию игрового клиента.
      */
-    abstract suspend fun getGameVersion(): Int
+    suspend fun getGameVersion(): Int
 
     // ==================== Game Server / Игровой сервер ====================
 
@@ -1074,31 +1074,31 @@ abstract class L2Control {
      * Get game server IP-address.
      * Получить IP-адрес игрового сервера.
      */
-    abstract suspend fun getServerIP(): String
+    suspend fun getServerIP(): String
 
     /**
      * Get game server name.
      * Получить название игрового сервера.
      */
-    abstract suspend fun getServerName(): String
+    suspend fun getServerName(): String
 
     /**
      * Get game server ID.
      * Получить ID игрового сервера.
      */
-    abstract suspend fun getServerID(): Int
+    suspend fun getServerID(): Int
 
     /**
      * Check if server is classic (L2 Classic).
      * Проверить, является ли сервер классическим (L2 Classic).
      */
-    abstract suspend fun isClassicServer(): Boolean
+    suspend fun isClassicServer(): Boolean
 
     /**
      * Get current server time (in minutes).
      * Получить текущее время сервера (в минутах).
      */
-    abstract suspend fun getServerTime(): Long
+    suspend fun getServerTime(): Long
 
     // ==================== Adrenaline Bot Window / Окно Adrenaline ====================
 
@@ -1110,7 +1110,7 @@ abstract class L2Control {
      * @param text Message text / Текст сообщения
      * @param color Text color (RGB) / Цвет текста (RGB)
      */
-    abstract suspend fun msg(title: String, text: String, color: Int = 0xFFFFFF): Boolean
+    suspend fun msg(title: String, text: String, color: Int = 0xFFFFFF): Boolean
 
     /**
      * Activate Adrenaline window blinking.
@@ -1118,7 +1118,7 @@ abstract class L2Control {
      *
      * @param game Blink game window (true) or bot window (false) / Мигать окном игры (true) или бота (false)
      */
-    abstract suspend fun blinkWindowBot(game: Boolean = true): Boolean
+    suspend fun blinkWindowBot(game: Boolean = true): Boolean
 
     /**
      * Activate/deactivate script controlling by hotkey (Ins).
@@ -1126,7 +1126,7 @@ abstract class L2Control {
      *
      * @param enable Enable (true) or disable (false) / Включить (true) или выключить (false)
      */
-    abstract suspend fun setScriptPause(enable: Boolean): Boolean
+    suspend fun setScriptPause(enable: Boolean): Boolean
 
     // ==================== Network / Сеть ====================
 
@@ -1136,7 +1136,7 @@ abstract class L2Control {
      *
      * @param level Activity level / Уровень активности
      */
-    abstract suspend fun sendActID(level: Long): Boolean
+    suspend fun sendActID(level: Long): Boolean
 
     /**
      * Send raw packet to server.
@@ -1144,7 +1144,7 @@ abstract class L2Control {
      *
      * @param text Hex packet data / Hex данные пакета
      */
-    abstract suspend fun sendToServer(text: String): Boolean
+    suspend fun sendToServer(text: String): Boolean
 
     /**
      * Send raw packet to client.
@@ -1152,7 +1152,7 @@ abstract class L2Control {
      *
      * @param text Hex packet data / Hex данные пакета
      */
-    abstract suspend fun sendToClient(text: String): Boolean
+    suspend fun sendToClient(text: String): Boolean
 
     /**
      * Block packet for specified time.
@@ -1163,7 +1163,7 @@ abstract class L2Control {
      * @param isServerPacket Server packet (true) or client packet (false) / Серверный пакет (true) или клиентский (false)
      * @param timeMs Block time in ms / Время блокировки в мс
      */
-    abstract suspend fun blockPacket(id: Int, id2: Int = 0, isServerPacket: Boolean, timeMs: Long = 0xFFFFFFFFL): Boolean
+    suspend fun blockPacket(id: Int, id2: Int = 0, isServerPacket: Boolean, timeMs: Long = 0xFFFFFFFFL): Boolean
 
     // ==================== Miscellaneous / Разное ====================
 
@@ -1174,7 +1174,7 @@ abstract class L2Control {
      * @param action Action type to wait for / Тип действия для ожидания
      * @param timeout Timeout in ms / Таймаут в мс
      */
-    abstract suspend fun waitAction(action: L2Action, timeout: Long = 5000): WaitResult
+    suspend fun waitAction(action: L2Action, timeout: Long = 5000): WaitResult
 
     // ==================== GPS Navigation / GPS Навигация ====================
 
@@ -1185,7 +1185,7 @@ abstract class L2Control {
      * @param filePath Path to GPS map file (.db3) / Путь к файлу GPS карты (.db3)
      * @return Number of loaded points / Количество загруженных точек
      */
-    abstract suspend fun loadGpsMap(filePath: String): Int
+    suspend fun loadGpsMap(filePath: String): Int
 
     /**
      * Move to GPS point by name.
@@ -1193,7 +1193,7 @@ abstract class L2Control {
      *
      * @param gpsPointName GPS point name / Имя GPS точки
      */
-    abstract suspend fun moveGpsPoint(gpsPointName: String): Boolean
+    suspend fun moveGpsPoint(gpsPointName: String): Boolean
 
     /**
      * Get GPS point by name.
@@ -1201,7 +1201,7 @@ abstract class L2Control {
      *
      * @param gpsPointName GPS point name / Имя GPS точки
      */
-    abstract suspend fun getGpsPoint(gpsPointName: String): L2GPSPoint
+    suspend fun getGpsPoint(gpsPointName: String): L2GPSPoint
 
     /**
      * Move to GPS point with random offset.
@@ -1210,7 +1210,7 @@ abstract class L2Control {
      * @param gpsPointName GPS point name / Имя GPS точки
      * @param range Random offset range / Диапазон случайного смещения
      */
-    abstract suspend fun moveGpsPointRandom(gpsPointName: String, range: Int = 100): Boolean
+    suspend fun moveGpsPointRandom(gpsPointName: String, range: Int = 100): Boolean
 
     // ==================== Events / События ====================
 
@@ -1218,23 +1218,23 @@ abstract class L2Control {
      * Flow of action events (combat, movement, etc.).
      * Поток событий действий (бой, движение и т.д.).
      */
-    abstract val actionEvents: Flow<ActionEvent>
+    val actionEvents: Flow<ActionEvent>
 
     /**
      * Flow of server → client packet events.
      * Поток событий пакетов сервер → клиент.
      */
-    abstract val packetEvents: Flow<PacketEvent>
+    val packetEvents: Flow<PacketEvent>
 
     /**
      * Flow of client → server packet events.
      * Поток событий пакетов клиент → сервер.
      */
-    abstract val cliPacketEvents: Flow<CliPacketEvent>
+    val cliPacketEvents: Flow<CliPacketEvent>
 
     /**
      * Flow of connection status changes.
      * Поток изменений статуса подключения.
      */
-    abstract val connectionStatus: StateFlow<ConnectionStatus>
+    val connectionStatus: StateFlow<ConnectionStatus>
 }

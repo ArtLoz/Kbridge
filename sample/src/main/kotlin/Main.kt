@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.l2bot.bridge.api.L2Adrenaline
-import com.l2bot.bridge.api.L2Bot
+import com.l2bot.bridge.core.L2BotImpl
 import com.l2bot.bridge.models.entities.L2User
 import com.l2bot.bridge.transport.jvm.JvmTransportProvider
 import kotlinx.coroutines.Dispatchers
@@ -47,7 +47,7 @@ fun main() = application {
 fun App() {
     val scope = rememberCoroutineScope()
 
-    var bot by remember { mutableStateOf<L2Bot?>(null) }
+    var bot by remember { mutableStateOf<L2BotImpl?>(null) }
     var user by remember { mutableStateOf<L2User?>(null) }
     var status by remember { mutableStateOf("Waiting...") }
     val logs = remember { mutableStateListOf<String>() }
