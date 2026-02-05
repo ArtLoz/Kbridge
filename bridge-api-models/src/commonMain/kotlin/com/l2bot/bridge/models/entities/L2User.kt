@@ -78,6 +78,8 @@ data class L2User(
     override val buffs: List<L2Buff> = emptyList(),
     override val abnormals: List<L2Buff> = emptyList(),
     override val equips: List<L2Item> = emptyList(),
+    @SerialName("atk_oid")
+    override val attackOid: Int,
 
     // IL2Char fields
     override val cp: Long = 0,

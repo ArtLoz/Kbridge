@@ -73,6 +73,8 @@ data class L2Char(
     @SerialName("to_z")
     override val toZ: Int = 0,
     override val target: L2Live? = null,
+    @SerialName("atk_oid")
+    override val attackOid: Int,
     @SerialName("cast_info")
     override val castInfo: L2Buff? = null,
     override val buffs: List<L2Buff> = emptyList(),
