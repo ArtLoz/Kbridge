@@ -33,11 +33,11 @@ fun IL2Spawn.distTo(x: Int, y: Int, z: Int): Int {
 
 /** Check if point is in range | Проверить, находится ли точка в радиусе */
 fun IL2Spawn.inRange(x: Int, y: Int, z: Int, range: Int, zLimit: Int = 250): Boolean {
-    if (abs(z - this.z) > zLimit) return false
     val dx = (x - this.x).toDouble()
     val dy = (y - this.y).toDouble()
     val dz = (z - this.z).toDouble()
-    return sqrt(dx * dx + dy * dy + dz * dz) <= range
+    val distance3D = sqrt(dx * dx + dy * dy + dz * dz)
+    return distance3D <= range
 }
 
 /** Check if object is in range | Проверить, находится ли объект в радиусе */
