@@ -78,6 +78,8 @@ data class L2Npc(
     override val buffs: List<L2Buff> = emptyList(),
     override val abnormals: List<L2Buff> = emptyList(),
     override val equips: List<L2Item> = emptyList(),
+    @SerialName("atk_oid")
+    override val attackOid: Int,
 
     // IL2Npc fields
     @SerialName("is_pet")
