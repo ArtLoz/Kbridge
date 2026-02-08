@@ -1265,10 +1265,10 @@ internal class L2BotImpl internal constructor(
         return rpcClient.call("Engine.GetPetList")
     }
 
-    override suspend fun inventory(): List<L2Item> {
+    override suspend fun questInventory(): List<L2Item> {
         return rpcClient.call("Engine.GetQuestInventoryList")
     }
-    override suspend fun questInventory(): List<L2Item> {
+    override suspend fun inventory(): List<L2Item> {
         return rpcClient.call("Engine.GetInventoryList")
     }
 
