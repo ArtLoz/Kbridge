@@ -8,7 +8,7 @@ version = libs.versions.sdkVersion.get()
 
 dependencies {
     api(project(":bridge-protocol"))
-    api(project(":bridge-api-core"))
+    api(project(":bridge-api"))
 
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.jna)

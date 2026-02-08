@@ -4,7 +4,11 @@ import com.l2bot.bridge.api.L2Adrenaline
 import com.l2bot.bridge.api.L2Bot
 import com.l2bot.bridge.api.TransportProvider
 
-class L2AdrenalineImpl internal constructor(
+fun L2Adrenaline(transportProvider: TransportProvider): L2Adrenaline {
+    return L2AdrenalineImpl(transportProvider)
+}
+
+internal class L2AdrenalineImpl(
     private val transportProvider: TransportProvider
 ) : L2Adrenaline {
 

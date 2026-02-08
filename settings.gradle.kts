@@ -19,6 +19,7 @@ rootProject.name = "Kbridge"
 
 include(":bridge-protocol")
 include(":bridge-api-models")
+include(":bridge-api")
 include(":bridge-api-core")
 include(":bridge-transport-jvm")
 include(":sample")

@@ -14,7 +14,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.l2bot.bridge.api.L2Adrenaline
-import com.l2bot.bridge.core.L2BotImpl
+import com.l2bot.bridge.api.L2Bot
+import com.l2bot.bridge.core.L2Adrenaline
 import com.l2bot.bridge.models.entities.L2User
 import com.l2bot.bridge.transport.jvm.JvmTransportProvider
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +27,7 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 fun main() = application {
-    remember { L2Adrenaline.setTransportProvider(JvmTransportProvider()) }
+    val adrenaline = remember { L2Adrenaline(JvmTransportProvider()) }
 
     Window(
         onCloseRequest = ::exitApplication,
@@ -37,17 +38,17 @@ fun main() = application {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colors.background
             ) {
-                App()
+                App(adrenaline)
             }
         }
     }
 }
 
 @Composable
-fun App() {
+fun App(adrenaline: L2Adrenaline) {
     val scope = rememberCoroutineScope()
 
-    var bot by remember { mutableStateOf<L2BotImpl?>(null) }
+    var bot by remember { mutableStateOf<L2Bot?>(null) }
     var user by remember { mutableStateOf<L2User?>(null) }
     var status by remember { mutableStateOf("Waiting...") }
     val logs = remember { mutableStateListOf<String>() }
@@ -66,7 +67,7 @@ fun App() {
         log("Scanning...")
 
         try {
-            val bots = L2Adrenaline.getAvailableBots()
+            val bots = adrenaline.getAvailableBots()
 
             if (bots.isEmpty()) {
                 status = "No bots found"
