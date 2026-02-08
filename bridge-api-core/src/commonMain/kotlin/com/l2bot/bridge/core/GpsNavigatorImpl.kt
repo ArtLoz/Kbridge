@@ -88,7 +88,7 @@ internal class GpsNavigatorImpl(
         return points.values.find { it.name.equals(name, ignoreCase = true) }
     }
 
-    override suspend fun navigateTo(x: Double, y: Double, z: Double): Boolean {
+    override suspend fun moveTo(x: Double, y: Double, z: Double): Boolean {
         val user = bot.user()
         val path = getPath(
             user.x.toDouble(), user.y.toDouble(), user.z.toDouble(),
@@ -98,7 +98,7 @@ internal class GpsNavigatorImpl(
         return walkPath(path)
     }
 
-    override suspend fun navigateTo(spotName: String): Boolean {
+    override suspend fun moveTo(spotName: String): Boolean {
         val user = bot.user()
         val path = getPathByName(
             user.x.toDouble(), user.y.toDouble(), user.z.toDouble(),
