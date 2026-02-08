@@ -14,7 +14,7 @@ data class L2ShopItem(
     // IL2Object fields
     override val name: String = "",
     override val id: Int = 0,
-    override val oid: Int = 0,
+    override val oid: Long = 0,
     override val valid: Boolean = false,
     @SerialName("l2_class")
     override val l2Class: L2Class = L2Class.UNKNOWN,

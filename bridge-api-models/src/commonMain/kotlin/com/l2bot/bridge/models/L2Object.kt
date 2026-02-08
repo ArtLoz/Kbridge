@@ -18,7 +18,7 @@ data class L2Object(
     override val id: Int = 0,
 
     /** Unique object ID (OID) | Уникальный идентификатор объекта */
-    override val oid: Int = 0,
+    override val oid: Long = 0,
 
     /** Object validity | Валидность объекта */
     override val valid: Boolean = false,

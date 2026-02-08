@@ -17,7 +17,7 @@ data class L2Char(
     // IL2Object fields
     override val name: String = "",
     override val id: Int = 0,
-    override val oid: Int = 0,
+    override val oid: Long = 0,
     override val valid: Boolean = false,
     @SerialName("l2_class")
     override val l2Class: L2Class = L2Class.UNKNOWN,
@@ -74,7 +74,7 @@ data class L2Char(
     override val toZ: Int = 0,
     override val target: L2Live? = null,
     @SerialName("atk_oid")
-    override val attackOid: Int,
+    override val attackOid: Long,
     @SerialName("cast_info")
     override val castInfo: L2Buff? = null,
     override val buffs: List<L2Buff> = emptyList(),

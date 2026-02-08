@@ -9,7 +9,7 @@ import kotlinx.serialization.SerialName
 @Serializable
 data class L2ChatMessage(
     /** OID отправителя сообщения | Sender's OID */
-    val oid: Int,
+    val oid: Long,
 
     /** Время получения сообщения | Message timestamp */
     val time: Long,

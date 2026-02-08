@@ -81,7 +81,7 @@ interface IL2Live : IL2Spawn {
     val target: IL2Live?
 
     /** Attack target OID | OID цели атаки */
-    val attackOid: Int
+    val attackOid: Long
 
     /** Current cast info | Информация о текущем касте */
     val castInfo: IL2Buff?

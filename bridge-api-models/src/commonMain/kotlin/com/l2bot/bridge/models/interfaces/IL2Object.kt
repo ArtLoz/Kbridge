@@ -12,7 +12,7 @@ interface IL2Object {
     /** Object ID | Идентификатор объекта */
     val id: Int
     /** Unique object ID (OID) | Уникальный идентификатор объекта */
-    val oid: Int
+    val oid: Long
     /** Object validity | Валидность объекта */
     val valid: Boolean
     /** Object type | Тип объекта */

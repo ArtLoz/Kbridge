@@ -18,7 +18,7 @@ data class L2Live(
     // IL2Object fields
     override val name: String = "",
     override val id: Int = 0,
-    override val oid: Int = 0,
+    override val oid: Long = 0,
     override val valid: Boolean = false,
     @SerialName("l2_class")
     override val l2Class: L2Class = L2Class.UNKNOWN,
@@ -80,5 +80,5 @@ data class L2Live(
     override val abnormals: List<L2Buff> = emptyList(),
     override val equips: List<L2Item> = emptyList(),
     @SerialName("atk_oid")
-    override val attackOid: Int
+    override val attackOid: Long
 ) : IL2Live
