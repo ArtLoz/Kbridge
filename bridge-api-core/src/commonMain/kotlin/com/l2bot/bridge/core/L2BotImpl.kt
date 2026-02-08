@@ -1,6 +1,7 @@
 package com.l2bot.bridge.core
 
 import com.l2bot.bridge.api.L2Bot
+import com.l2bot.bridge.api.L2Gps
 import com.l2bot.bridge.core.RpcClient
 import com.l2bot.bridge.models.L2GPSPoint
 import com.l2bot.bridge.models.dialogs.L2ConfirmDlg
@@ -65,6 +66,8 @@ internal class L2BotImpl internal constructor(
     private val _errors = MutableSharedFlow<L2RpcException>()
     override val errors = _errors.asSharedFlow()
 
+    override val gps: L2Gps = GpsNavigatorImpl(this)
+
     override val actionEvents: Flow<ActionEvent> =
         transport.receiveActions()
             .mapNotNull { line ->
@@ -78,6 +81,7 @@ internal class L2BotImpl internal constructor(
                         )
                     } else null
                 } catch (e: Exception) {
+                    _errors.emit(L2RpcException.RemoteError(code = 1, message = "action error ${e.message}"))
                     null
                 }
             }
@@ -93,7 +97,8 @@ internal class L2BotImpl internal constructor(
                             data = parts[1]
                         )
                     } else null
-                } catch (e: Exception) {
+                } catch (_: Exception) {
+                    _errors.emit(L2RpcException.RemoteError(code = 2, message = "packet error"))
                     null
                 }
             }
@@ -110,6 +115,7 @@ internal class L2BotImpl internal constructor(
                         )
                     } else null
                 } catch (e: Exception) {
+                    _errors.emit(L2RpcException.RemoteError(code = 3, message = "cli packet error ${e.message}"))
                     null
                 }
             }
@@ -937,7 +943,7 @@ internal class L2BotImpl internal constructor(
 
         return try {
             L2Status.valueOf(statusName)
-        } catch (e: IllegalArgumentException) {
+        } catch (_: IllegalArgumentException) {
             L2Status.lsOff
         }
     }

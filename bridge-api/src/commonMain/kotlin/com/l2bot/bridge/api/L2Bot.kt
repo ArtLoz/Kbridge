@@ -9,6 +9,8 @@ interface L2Bot : L2Control {
 
     val errors: SharedFlow<L2RpcException>
 
+    val gps: L2Gps
+
     suspend fun connect()
 
     suspend fun disconnect()
