@@ -16,7 +16,8 @@ import kotlinx.serialization.serializer
  * Thread-safe RPC client for communicating with the Delphi backend via Transport.
  */
 internal class RpcClient(
-    @PublishedApi internal val transport: Transport
+    @PublishedApi internal val transport: Transport,
+    @PublishedApi internal val target: String =""
 ) {
     @PublishedApi internal val json = Json {
         ignoreUnknownKeys = true
@@ -48,7 +49,7 @@ internal class RpcClient(
         val currentSerializer = serializer<T>()
 
         return commandMutex.withLock {
-            val request = RpcRequest(id, method, params)
+            val request = RpcRequest(id, method, params, target)
             val requestJson = json.encodeToString(request)
 
             try {

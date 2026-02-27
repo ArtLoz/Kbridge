@@ -10,5 +10,6 @@ import kotlinx.serialization.json.JsonElement
 data class RpcRequest(
     val id: Long,
     val method: String,
-    val params: JsonElement? = null
+    val params: JsonElement? = null,
+    val target: String? = null
 )

@@ -31,6 +31,14 @@ import kotlinx.coroutines.flow.StateFlow
  */
 interface L2Control {
 
+    /**
+     * Returns L2Control that routes all commands to another bot by name.
+     * Возвращает L2Control, который перенаправляет все команды другому боту по имени.
+     *
+     * @param target Character name or "*" for all / Имя персонажа или "*" для всех
+     */
+    fun on(target: String): L2Control
+
     // ==================== Data Retrieval / Получение данных ====================
 
     /**
@@ -1218,6 +1226,12 @@ interface L2Control {
      * @param range Random offset range / Диапазон случайного смещения
      */
     suspend fun moveGpsPointRandom(gpsPointName: String, range: Int = 100): Boolean
+
+    /**
+     * Get list of engines or available bot instances.
+     * Получить список движков или доступных инстансов бота.
+     */
+    suspend fun getEngineList(refresh: Boolean = false):List<L2User>
 
     // ==================== Events / События ====================
 

@@ -1,6 +1,7 @@
 package com.l2bot.bridge.core
 
 import com.l2bot.bridge.api.L2Bot
+import com.l2bot.bridge.api.L2Control
 import com.l2bot.bridge.api.L2Gps
 import com.l2bot.bridge.core.RpcClient
 import com.l2bot.bridge.models.L2GPSPoint
@@ -49,24 +50,43 @@ import kotlinx.serialization.json.put
 
 internal class L2BotImpl internal constructor(
     private val transport: Transport,
-    override val charName: String
+    override val charName: String,
+    private val rpcClient: RpcClient
 ) : L2Bot {
+
+    internal constructor(transport: Transport, charName: String) : this(
+        transport, charName, RpcClient(transport)
+    )
 
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     private var launchJob: Job? = null
 
-    private val rpcClient = RpcClient(transport).apply {
-        onGlobalError = { ex ->
-            scope.launch {
-                _errors.emit(ex)
+    init {
+        if (rpcClient.onGlobalError == null) {
+            rpcClient.onGlobalError = { ex ->
+                scope.launch {
+                    _errors.emit(ex)
+                }
             }
         }
     }
+
     private val _errors = MutableSharedFlow<L2RpcException>()
     override val errors = _errors.asSharedFlow()
 
     override val gps: L2Gps = GpsNavigatorImpl(this)
+
+    private val remoteControls = mutableMapOf<String, L2Control>()
+
+    override fun on(target: String): L2Control {
+        return remoteControls.getOrPut(target) {
+            val targetedRpc = RpcClient(transport, target).apply {
+                onGlobalError = rpcClient.onGlobalError
+            }
+            L2BotImpl(transport, charName, targetedRpc)
+        }
+    }
 
     override val actionEvents: Flow<ActionEvent> =
         transport.receiveActions()
@@ -1264,6 +1284,15 @@ internal class L2BotImpl internal constructor(
                 put("gps_range", range)
             },
             timeoutMs = 60_000 * 10
+        )
+    }
+
+    override suspend fun getEngineList(refresh: Boolean): List<L2User> {
+        return rpcClient.call(
+            method = "Engine.GetEngineList",
+            params = buildJsonObject {
+                put("refresh", refresh)
+            }
         )
     }
 
