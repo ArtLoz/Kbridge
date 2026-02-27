@@ -90,7 +90,7 @@ class JvmPipeTransport : Transport {
     
     override fun receiveActions(): Flow<String> = flow {
         val pipe = requireNotNull(actionPipe) { "Not connected" }
-        
+
         while (currentCoroutineContext().isActive) {
             try {
                 val line = pipe.readLine()
@@ -100,16 +100,18 @@ class JvmPipeTransport : Transport {
                     _isConnected.value = false
                     break
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 _isConnected.value = false
                 break
             }
         }
     }.flowOn(Dispatchers.IO)
-    
+
     override fun receivePackets(): Flow<String> = flow {
         val pipe = requireNotNull(packetPipe) { "Not connected" }
-        
+
         while (currentCoroutineContext().isActive) {
             try {
                 val line = pipe.readLine()
@@ -119,16 +121,18 @@ class JvmPipeTransport : Transport {
                     _isConnected.value = false
                     break
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 _isConnected.value = false
                 break
             }
         }
     }.flowOn(Dispatchers.IO)
-    
+
     override fun receiveCliPackets(): Flow<String> = flow {
         val pipe = requireNotNull(cliPacketPipe) { "Not connected" }
-        
+
         while (currentCoroutineContext().isActive) {
             try {
                 val line = pipe.readLine()
@@ -138,6 +142,8 @@ class JvmPipeTransport : Transport {
                     _isConnected.value = false
                     break
                 }
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
                 _isConnected.value = false
                 break
