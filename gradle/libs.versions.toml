@@ -5,7 +5,7 @@ coroutines = "1.10.2"
 serialization = "1.10.0"
 jna = "5.18.1"
 sqlite-jdbc = "3.47.1.0"
-sdkVersion = "1.0.5"
+sdkVersion = "1.0.6"
 sdkGroup = "com.github.artloz"
 
 [libraries]
