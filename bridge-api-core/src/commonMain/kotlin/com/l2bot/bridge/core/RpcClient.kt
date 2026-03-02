@@ -73,13 +73,13 @@ internal class RpcClient(
         while (true) {
             val remaining = deadline - System.currentTimeMillis()
             if (remaining <= 0) {
-                handleError(L2RpcException.Transport("Response timeout (${timeoutMs}ms) in method $method"))
+                handleError(L2RpcException.Timeout("Response timeout (${timeoutMs}ms) in method $method"))
             }
             val line = try {
                 transport.receive(remaining)
             } catch (e: Exception) {
                 handleError(L2RpcException.Transport("Transport error in method $method", e))
-            } ?: handleError(L2RpcException.Transport("Response timeout (${timeoutMs}ms) in method $method"))
+            } ?: handleError(L2RpcException.Timeout("Response timeout (${timeoutMs}ms) in method $method"))
 
             val candidate = try {
                 json.decodeFromString<RpcResponse>(line)

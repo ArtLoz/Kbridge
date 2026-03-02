@@ -359,7 +359,8 @@ internal class L2BotImpl internal constructor(
                 put("id", id)
                 put("force", force)
                 put("shift", shift)
-            }
+            },
+            timeoutMs = 75_000
         )
     }
     override suspend fun dUseSkill(id: Long, force: Boolean, shift: Boolean): Boolean {
@@ -389,7 +390,8 @@ internal class L2BotImpl internal constructor(
                 put("z", z)
                 put("force", force)
                 put("shift", shift)
-            }
+            },
+            timeoutMs = 75_000
         )
     }
 
