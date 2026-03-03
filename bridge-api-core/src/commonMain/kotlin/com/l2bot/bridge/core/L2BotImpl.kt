@@ -34,11 +34,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonObject
@@ -88,7 +90,7 @@ internal class L2BotImpl internal constructor(
         }
     }
 
-    override val actionEvents: Flow<ActionEvent> =
+    override val actionEvents: SharedFlow<ActionEvent> =
         transport.receiveActions()
             .mapNotNull { line ->
                 try {
@@ -105,8 +107,9 @@ internal class L2BotImpl internal constructor(
                     null
                 }
             }
+            .shareIn(scope, SharingStarted.Lazily)
 
-    override val packetEvents: Flow<PacketEvent> =
+    override val packetEvents: SharedFlow<PacketEvent> =
         transport.receivePackets()
             .mapNotNull { line ->
                 try {
@@ -122,8 +125,9 @@ internal class L2BotImpl internal constructor(
                     null
                 }
             }
+            .shareIn(scope, SharingStarted.Lazily)
 
-    override val cliPacketEvents: Flow<CliPacketEvent> =
+    override val cliPacketEvents: SharedFlow<CliPacketEvent> =
         transport.receiveCliPackets()
             .mapNotNull { line ->
                 try {
@@ -139,6 +143,7 @@ internal class L2BotImpl internal constructor(
                     null
                 }
             }
+            .shareIn(scope, SharingStarted.Lazily)
 
     override val connectionStatus: StateFlow<ConnectionStatus> =
         transport.isConnected.map { connected ->

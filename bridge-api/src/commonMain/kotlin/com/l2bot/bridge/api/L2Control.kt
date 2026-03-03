@@ -23,6 +23,7 @@ import com.l2bot.bridge.models.types.RestartType
 import com.l2bot.bridge.models.types.WaitResult
 import com.l2bot.bridge.models.types.ZoneType
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -1239,19 +1240,19 @@ interface L2Control {
      * Flow of action events (combat, movement, etc.).
      * Поток событий действий (бой, движение и т.д.).
      */
-    val actionEvents: Flow<ActionEvent>
+    val actionEvents: SharedFlow<ActionEvent>
 
     /**
      * Flow of server → client packet events.
      * Поток событий пакетов сервер → клиент.
      */
-    val packetEvents: Flow<PacketEvent>
+    val packetEvents: SharedFlow<PacketEvent>
 
     /**
      * Flow of client → server packet events.
      * Поток событий пакетов клиент → сервер.
      */
-    val cliPacketEvents: Flow<CliPacketEvent>
+    val cliPacketEvents: SharedFlow<CliPacketEvent>
 
     /**
      * Flow of connection status changes.

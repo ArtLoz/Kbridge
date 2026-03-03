@@ -43,7 +43,7 @@ internal class RpcClient(
     suspend inline fun <reified T> call(
         method: String,
         params: JsonElement? = JsonObject(emptyMap()),
-        timeoutMs: Long = 20000
+        timeoutMs: Long = 80000
     ): T {
         val id = nextId()
         val currentSerializer = serializer<T>()
